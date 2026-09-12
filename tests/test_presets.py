@@ -1,6 +1,6 @@
 from evalsys.config import load_config
 from evalsys.llm.providers import extract_chat_text
-from evalsys.presets import apply_preset, list_presets, suite_names
+from evalsys.presets import apply_mix, apply_preset, list_presets, load_runtime_config, suite_names
 
 
 def test_named_presets_exist():
@@ -26,6 +26,27 @@ def test_apply_preset_sets_all_agents():
     for settings in config.llm_agents.values():
         assert settings.model == "google/gemma-4-31b-it"
         assert settings.provider == "nvidia"
+
+
+def test_apply_mix_uses_different_models():
+    config = apply_mix(load_config(), "mixed")
+    assert config.preset == "mix:mixed"
+    assert config.llm_agents["correctness"].model == "google/gemma-4-31b-it"
+    assert config.llm_agents["style"].model == "gemini-2.5-flash"
+    assert config.llm_agents["complexity"].model == "gemini-2.5-flash"
+    assert config.llm_agents["edge_cases"].model == "gemma-4-31b"
+    assert config.llm_agents["counteragent"].model == "gemma-4-31b"
+    assert config.llm_agents["correctness"].provider == "nvidia"
+    assert config.llm_agents["style"].provider == "gemini"
+    assert config.llm_agents["counteragent"].provider == "cerebras"
+
+
+def test_runtime_default_mix_and_agent_override():
+    config = load_runtime_config(mock=True)
+    assert config.preset == "mix:mixed"
+    assert config.llm_agents["correctness"].provider == "mock"
+    config = load_runtime_config(agent_assignments={"style": "groq"}, mock=True)
+    assert config.llm_agents["style"].model == "openai/gpt-oss-120b"
 
 
 def test_kimi_skips_temperature():

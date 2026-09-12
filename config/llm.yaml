@@ -1,6 +1,6 @@
-# Swap providers/models per agent without touching code.
-# provider: openai_compat | anthropic | gemini | mock
-# api_key_env: name of the environment variable holding the key
+# mix: name from config/models.yaml mixes. Applied unless you pass --preset or --mix.
+# Leave mix empty and fill agents: if you want to assign models only here.
+mix: mixed
 
 default:
   provider: openai_compat
@@ -13,34 +13,15 @@ default:
   timeout_seconds: 90
   extra_headers: {}
 
-# Optional per-agent overrides. Uncomment and change as needed.
+# Per-agent override. Use preset: <name from models.yaml> or a full provider block.
+# Example:
+#   correctness:
+#     preset: nvidia-deepseek
+#   style:
+#     preset: groq
 agents:
   correctness: {}
   style: {}
   counteragent: {}
   edge_cases: {}
   complexity: {}
-
-# Example: mix providers
-# agents:
-#   correctness:
-#     model: gpt-4o
-#   style:
-#     provider: openai_compat
-#     model: llama-3.3-70b-versatile
-#     api_key_env: GROQ_API_KEY
-#     base_url_env: GROQ_BASE_URL
-#     base_url: https://api.groq.com/openai/v1
-#   counteragent:
-#     provider: anthropic
-#     model: claude-sonnet-4-20250514
-#     api_key_env: ANTHROPIC_API_KEY
-#   edge_cases:
-#     provider: gemini
-#     model: gemini-2.0-flash
-#     api_key_env: GEMINI_API_KEY
-#   complexity:
-#     provider: openai_compat
-#     model: deepseek-chat
-#     api_key_env: DEEPSEEK_API_KEY
-#     base_url: https://api.deepseek.com

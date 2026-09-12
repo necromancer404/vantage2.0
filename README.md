@@ -21,6 +21,26 @@ copy .env.example .env
 
 Put API keys in `.env`. Named judge models live in `config/models.yaml`.
 
+## Different model per agent
+
+Default mix is `mixed` in `config/llm.yaml`:
+
+| Agent | Model |
+| --- | --- |
+| correctness | NVIDIA Gemma 4 31B |
+| style | Gemini 2.5 Flash |
+| complexity | Gemini 2.5 Flash |
+| edge_cases | Cerebras Gemma 4 31B |
+| counteragent | Cerebras Gemma 4 31B |
+
+```bash
+python -m evalsys batch --limit 3
+python -m evalsys batch --mix mixed-nvidia
+python -m evalsys batch --mix mixed --agent style=groq
+```
+
+Edit mixes in `config/models.yaml`, or change `mix:` in `config/llm.yaml`. `--preset groq` still forces the same model on every agent.
+
 ## Test specific LLMs
 
 List presets:

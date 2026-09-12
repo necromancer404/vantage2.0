@@ -119,3 +119,30 @@ test_suite:
   - nvidia-gemma-4
   - moonshot-kimi-k3
   - cerebras
+
+# Different model per agent. Default mix is `mixed`.
+mixes:
+  mixed:
+    label: Gemma correctness, Gemini style/complexity, Cerebras edge/counter
+    agents:
+      correctness: nvidia-gemma-4
+      style: gemini
+      complexity: gemini
+      edge_cases: cerebras
+      counteragent: cerebras
+  mixed-nvidia:
+    label: NVIDIA models split across agents
+    agents:
+      correctness: nvidia-deepseek
+      style: nvidia-gemma-4
+      counteragent: nvidia-laguna-xs
+      edge_cases: nvidia-gemma-4
+      complexity: nvidia-deepseek
+  mixed-groq-nvidia:
+    label: Groq + NVIDIA only
+    agents:
+      correctness: nvidia-deepseek
+      style: groq
+      counteragent: nvidia-laguna-xs
+      edge_cases: groq-llama
+      complexity: nvidia-gemma-4
