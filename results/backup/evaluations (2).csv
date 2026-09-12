@@ -1,0 +1,193 @@
+timestamp_utc,sample_id,preset,judge_model,judge_provider,criterion,ground_truth,predicted_grade,total_score,overall_confidence,correctness_score,correctness_confidence,correctness_grade,correctness_summary,correctness_findings,correctness_model,correctness_provider,correctness_error,style_score,style_confidence,style_grade,style_summary,style_findings,style_model,style_provider,style_error,counteragent_score,counteragent_confidence,counteragent_grade,counteragent_summary,counteragent_findings,counteragent_model,counteragent_provider,counteragent_error,edge_cases_score,edge_cases_confidence,edge_cases_grade,edge_cases_summary,edge_cases_findings,edge_cases_model,edge_cases_provider,edge_cases_error,complexity_score,complexity_confidence,complexity_grade,complexity_summary,complexity_findings,complexity_model,complexity_provider,complexity_error,question,submission
+2026-09-12T14:59:19.351504+00:00,all_samples:0,mix:mixed,gemini-2.5-flash | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Overall program correctness,A,D,37.1,0.363,0.0,0.0,,Agent call failed.,,poolside/laguna-xs-2.1,nvidia,"openai_compat request failed: 503 {""error"":{""message"":""ResourceExhausted: Worker local total request limit reached (32/32)"",""type"":""Service Unavailable"",""code"":503}}",85.0,0.9,A,"The code demonstrates good structure, clear naming, and consistent formatting, making it highly readable. The primary area for improvement is the complete absence of comments, which is crucial for maintainability and understanding for a CS1 student.","No comments are present in the code, which is a significant omission for readability and maintainability, especially for a function definition. | The code is otherwise well-formatted with consistent indentation and brace placement. | Function and variable names are clear and appropriate, enhancing readability. | The program is well-structured, separating the `my_fmod` logic into its own function, which is good practice.",gemini-2.5-flash,gemini,,78.0,0.78,B,The program mostly implements fmod via repeated subtraction but returns the wrong result when x equals y.,"If x == y the function returns x instead of 0, violating the definition of fmod. | The code uses the non‑standard <simplecpp> header; while it may compile in some environments, standard solutions expect <iostream> and using namespace std. | No check for y == 0, though the problem guarantees positive inputs, this edge case is unhandled.",openai/gpt-oss-120b,groq,,65.0,0.85,C,"The program correctly computes fmod for most cases but fails when x equals y, returning x instead of 0, violating the specification.","Equality case (x == y) returns x rather than 0, which is incorrect. | Assumes y > 0 as per problem, so no division‑by‑zero handling needed. | Uses repeated subtraction which works but may be inefficient for large ratios. | Correctly formats output to three decimal places.",openai/gpt-oss-120b,groq,,0.0,0.0,,Agent call failed.,,gemini-2.5-flash,gemini,Could not parse JSON from LLM output: Unterminated string starting at: line 7 column 5 (char 307),"Write a program that directly implements the fmod function for the modulo operation on two real positive numbers, where fmod (x,y) = x t * y where t is the truncated (i.e., rounded towards zero) result of x/y. Compute the answer using only repeated subtraction.
+
+The program should have a function named my_fmod that takes two arguments x and y. The answer should be returned back to the main function and should be printed in the main function.
+
+Input Format
+
+The input is two positive real numbers x and y separated by a space.
+
+Output Format
+
+Single line containing the fmod of x and y. Print 3 digits after the decimal point.
+
+In order to force cout to always print 3 digits after the decimal point, do the following before printing the output with cout:
+
+cout << fixed;
+
+cout.precision(3); // print three digits after the decimal point
+
+Note: Do not write any c++ statements for printing general messages. For example, the following should NOT be present in your program:
+cout << ""Enter a number:"",
+cout << ""The computed answer is"", etc.
+cout should be used to print only the computed final output. In addition, do not print unnecessary spaces unless specified in the program.","#include<simplecpp>
+float my_fmod(float x, float y){
+	if(x<=y){
+		return x;
+	}
+	else{
+		while(x>=y){
+			x=x-y;
+		}
+		return x;
+	}
+}
+
+int main(){
+	float x,y;
+	cin >> x >> y;
+	cout << fixed; cout.precision(3);
+	cout << my_fmod(x,y);
+}"
+2026-09-12T14:59:35.883806+00:00,all_samples:1,mix:mixed,gemini-2.5-flash | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Overall program correctness,A,D,26.75,0.4853,0.0,0.0,,Agent call failed.,,poolside/laguna-xs-2.1,nvidia,"openai_compat request failed: 503 {""error"":{""message"":""ResourceExhausted: Worker local total request limit reached (32/32)"",""type"":""Service Unavailable"",""code"":503}}",25.0,0.9,D,"The code demonstrates basic functional structure but suffers from significant style issues, including a global variable, unclear function parameters, lack of comments, and use of non-standard C++ features, making it difficult to read and maintain.","Global Variable Usage: The variable `n` is declared globally and used by `argmin` and `main`. This makes `argmin` dependent on global state, reducing its reusability and making the code harder to reason about. `n` should be passed as an argument to `argmin`. | Unclear `argmin` Parameter and Logic: The parameter `x` in `argmin` is poorly named and its purpose (representing the number of elements to consider from the end of the array) is not immediately obvious. The loop condition `i>=n-x` is convoluted and significantly reduces readability. | Lack of Comments: There are no comments to explain the non-obvious logic, especially within the `argmin` function, which makes understanding its intent very difficult. | Non-Standard C++ (VLA): The declaration `int A[n];` in `main` uses a Variable Length Array (VLA), which is a C99 feature and a non-standard extension in C++. For portable and idiomatic C++, `std::vector<int>` or dynamic allocation (`new int[n]`) should be used. | Minor Formatting: Lack of blank lines between logical blocks within functions (e.g., between variable declarations and loops, or between different parts of the `sort` function) slightly hinders readability.",gemini-2.5-flash,gemini,,30.0,0.78,D,The program contains non‑standard constructs and likely fails to compile on a conforming C++ compiler.,"Uses a variable‑length array `int A[n];` which is not allowed in standard C++ (causes compilation error). | Function `argmin` relies on the global variable `n` instead of its parameter, making the code fragile and confusing. | Potential undefined behavior for edge case `n = 0` (array of size 0 and loops that assume at least one element). | No newline after output, though not required, is a minor formatting issue. | Naming the sorting function `sort` may clash with `std::sort` when `using namespace std;` is present.",openai/gpt-oss-120b,groq,,20.0,0.85,D,"The program uses a non‑standard variable length array and relies on a global n inside argmin, causing compilation failure under standard C++ and making the solution non‑portable.","Uses VLA (int A[n];) which is illegal in standard C++ and will not compile with -std=c++17. | argmin ignores its length parameter and depends on the global variable n, a fragile design. | Logic works for typical cases but is not robustly justified for edge inputs like n=0. | No explicit handling of invalid or empty input beyond default loops.",openai/gpt-oss-120b,groq,,95.0,1,A,"The student correctly implemented the selection sort algorithm as described, exhibiting an O(n^2) time complexity and O(1) space complexity. This approach is highly efficient and appropriate for the given constraint of n < 25.","The algorithm implemented is Selection Sort, which matches the problem description and has a time complexity of O(n^2) due to the nested loop structure (outer loop in `sort`, inner loop in `argmin`). | The space complexity is O(1) auxiliary space, as only a few variables are used for temporary storage. | For n < 25, an O(n^2) algorithm is perfectly acceptable and will execute instantaneously, demonstrating appropriate algorithmic choice for the given constraints. | The `argmin` function, while having an unconventional loop structure and relying on a global variable `n`, correctly identifies the index of the minimum element within the unsorted portion of the array as required by selection sort.",gemini-2.5-flash,gemini,,"Write a C++ program to sort an array A of n numbers strictly using the given algorithm:
+
+1. Find the minimum element in the array.
+2. Swap the minimum element with the first element of the array.
+3. Find the minimum element in the remaining array.
+4. Swap the minimum element with the second element of the array.
+5. Repeat steps 3 and 4 until the entire array is sorted.
+
+Constraints:
+
+* n < 25
+
+Input Format:
+
+* Non-negative integer n
+* Array A of n elements
+
+Output Format:
+
+* Print the sorted array with a space between adjacent elements.","#include<iostream>
+using namespace std;
+int n;
+int argmin(int A[],int x){
+	int minval=n-1;
+	for(int i=n-2;i>=n-x;i--){
+		if(A[minval]>A[i]){minval=i;}
+	}return minval;}
+
+void sort(int A[],int n){
+	for(int i=0;i<n-1;i++)
+	{int minval=argmin(A,n-i);
+	 int temp=A[minval];
+	A[minval]=A[i];
+	A[i]=temp;}
+}
+int main(){
+	cin>>n;
+	int A[n];for(int i=0;i<n;i++){cin>>A[i];}
+	sort(A,n);
+    for(int j=0;j<n;j++){cout<<A[j]<<"" "";}
+}"
+2026-09-12T14:59:46.176276+00:00,all_samples:2,mix:mixed,gemini-2.5-flash | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Overall program correctness,A,C,59.05,0.5231,0.0,0.0,,Agent call failed.,,poolside/laguna-xs-2.1,nvidia,"openai_compat request failed: 503 {""error"":{""message"":""ResourceExhausted: Worker local total request limit reached (32/32)"",""type"":""Service Unavailable"",""code"":503}}",88.0,0.9,A,"The code is well-structured and formatted with clear variable names, though it lacks comments to explain the logic within the `lcm` function.","No comments are provided to explain the algorithm or the purpose of the `lcm` function's internal logic. | The variable `k` in the `lcm` function could be named more descriptively (e.g., `product` or `initialProduct`) for improved clarity.",gemini-2.5-flash,gemini,,90.0,0.9,A,"The program correctly implements LCM via GCD and follows the required structure, but it may overflow for large inputs.",Potential integer overflow when computing m*n for large positive integers. | Relies on simplecpp's main_program macro; assumes it provides necessary includes and namespace.,openai/gpt-oss-120b,groq,,90.0,0.95,A,"The program correctly implements LCM calculation and adheres to required syntax, producing correct output for valid positive integers.",,openai/gpt-oss-120b,groq,,95.0,1,A,"The student's solution correctly implements the LCM function using the highly efficient Euclidean algorithm for GCD, achieving optimal time and space complexity.","The time complexity of the `lcm` function is O(log(min(A, B))) due to the use of the Euclidean algorithm for GCD, which is very efficient. | The space complexity is O(1), as only a few constant-size variables are used. | A potential integer overflow could occur if the product `m*n` exceeds the maximum value for an `int` (e.g., if A and B are large, such as 10^5 or more), which would require using `long long` for the product `k` to ensure correctness for all possible `int` inputs.",gemini-2.5-flash,gemini,,"Write a program that takes two positive integers A and B as input, passes them to a function that computes the LCM, and finally prints the result in the main function.","#include<simplecpp>
+int lcm(int m, int n){
+	int k = m*n;
+	while(m%n!=0){
+		int temp = m%n;
+		m = n;
+		n = temp;
+	}
+	return k/n;
+}
+main_program{
+	int A,B;
+	cin>>A>>B;
+	cout<<lcm(A,B);
+}"
+2026-09-12T15:06:14.542948+00:00,all_samples:0,mix:mixed,gemini-2.5-flash | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Overall program correctness,A,C,51.35,0.4922,0.0,0.0,,Agent call failed.,,poolside/laguna-xs-2.1,nvidia,Could not parse JSON from LLM output: Extra data: line 14 column 2 (char 740),95.0,1,A,"The code is exceptionally clean, well-formatted, and adheres to all explicit problem constraints regarding output and function naming. It demonstrates excellent readability and maintainability for a CS1 student.","The `my_fmod` function lacks comments, though its logic is straightforward and easy to understand. | The program uses the `simplecpp` header, which is acceptable given the problem context, but `iostream` is more conventional for purely computational tasks in standard C++.",gemini-2.5-flash,gemini,,60.0,0.78,C,"The program mostly follows the specification but fails for the case x == y, returning the wrong result.","If x equals y, the function returns x (y) instead of 0, violating the definition of fmod. | The conditional `if(x<=y)` should be `if(x<y)` to handle the equality case correctly. | No handling for y == 0, though the problem states y is positive, so this is acceptable.",openai/gpt-oss-120b,groq,,78.0,0.84,B,The program mostly works but fails for the edge case x == y (should return 0) and lacks handling for y == 0.,"When x equals y, my_fmod returns x instead of 0, violating the fmod definition. | No guard against y being zero, which could cause an infinite loop or undefined behavior. | Repeated subtraction may be inefficient for large values but meets the specification for typical inputs.",openai/gpt-oss-120b,groq,,95.0,1,A,"The student correctly implemented the `fmod` function using only repeated subtraction as required by the problem statement, adhering to the specified algorithmic constraint.","The time complexity of the `my_fmod` function is O(x/y), as it performs `trunc(x/y)` subtraction operations in the worst case. | For inputs where x is significantly larger than y (e.g., x = 1e5, y = 1e-5, leading to 10^10 iterations), this approach can result in a very large number of iterations and would likely lead to a Time Limit Exceeded (TLE) error. | The space complexity is O(1). | Despite the potential for TLE with extreme inputs, the chosen algorithm is the most direct and efficient way to satisfy the problem's explicit constraint of using 'only repeated subtraction'.",gemini-2.5-flash,gemini,,"Write a program that directly implements the fmod function for the modulo operation on two real positive numbers, where fmod (x,y) = x t * y where t is the truncated (i.e., rounded towards zero) result of x/y. Compute the answer using only repeated subtraction.
+
+The program should have a function named my_fmod that takes two arguments x and y. The answer should be returned back to the main function and should be printed in the main function.
+
+Input Format
+
+The input is two positive real numbers x and y separated by a space.
+
+Output Format
+
+Single line containing the fmod of x and y. Print 3 digits after the decimal point.
+
+In order to force cout to always print 3 digits after the decimal point, do the following before printing the output with cout:
+
+cout << fixed;
+
+cout.precision(3); // print three digits after the decimal point
+
+Note: Do not write any c++ statements for printing general messages. For example, the following should NOT be present in your program:
+cout << ""Enter a number:"",
+cout << ""The computed answer is"", etc.
+cout should be used to print only the computed final output. In addition, do not print unnecessary spaces unless specified in the program.","#include<simplecpp>
+float my_fmod(float x, float y){
+	if(x<=y){
+		return x;
+	}
+	else{
+		while(x>=y){
+			x=x-y;
+		}
+		return x;
+	}
+}
+
+int main(){
+	float x,y;
+	cin >> x >> y;
+	cout << fixed; cout.precision(3);
+	cout << my_fmod(x,y);
+}"
+2026-09-12T15:07:42.088765+00:00,all_samples:1,mix:mixed,gemini-2.5-flash | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Overall program correctness,A,D,38.75,0.7735,0,1,D,"The code has critical bugs: argmin searches from the end backwards and uses global n instead of array size, and the sort function swaps wrong elements due to incorrect argmin logic.","argmin function searches backwards from n-1 to n-x instead of forwards from i to n-1 | argmin uses global n instead of the array size parameter, causing wrong indices | The swap logic in sort is incorrect because argmin returns wrong indices | The output has a trailing space which may violate the spec | Variable 'minval' in argmin is initialized to n-1 instead of the starting index x",poolside/laguna-xs-2.1,nvidia,,55.0,0.9,D,"The code exhibits significant style issues, including the use of a global variable, a confusingly designed function with an obscure parameter, and a complete lack of comments, which severely impacts readability and maintainability. Additionally, it uses a non-standard C++ feature for array declaration.","The variable `n` is declared globally and implicitly used by `argmin` and `sort`, reducing modularity and making the code harder to understand and maintain. | The `argmin` function's parameter `x` is poorly named and its role in defining the search range (combined with the global `n` and reverse loop) makes the function's logic very difficult to follow. | There are no comments to explain the purpose of functions, parameters, or the complex logic within `argmin`, severely hindering readability. | The use of `int A[n];` for a runtime-sized array is a Variable Length Array (VLA), which is a C99 feature and not standard C++. `std::vector` or dynamic allocation should be used in C++.",gemini-2.5-flash,gemini,,30.0,0.78,D,"The program compiles only with non‑standard extensions and relies on a global variable for indexing, making it non‑portable and fragile.","Uses a variable‑length array `int A[n];` which is illegal in standard C++ (will not compile with -std=c++17). | Function `argmin` depends on the global variable `n` instead of its parameters, causing hidden coupling and potential bugs if `n` changes. | Naming the user‑defined function `sort` shadows `std::sort`; while not a compile error, it is poor practice. | No explicit `return 0;` in `main`, though allowed, is omitted. | Overall algorithm works for typical cases, but the reliance on non‑standard features and global state makes the solution unreliable.",openai/gpt-oss-120b,groq,,65.0,0.78,B,"The program generally implements the required selection‑sort logic and produces correct output for typical inputs, but it relies on non‑standard variable‑length arrays and may fail for n=0.","Uses a VLA (int A[n];) which is not valid standard C++ and can cause compilation errors. | argmin() ignores its second parameter and depends on the global variable n, making the logic fragile. | If n = 0, the declaration int A[0] is illegal and the program may not compile or run. | No explicit handling for the edge case n = 0, which is allowed by the problem statement.",openai/gpt-oss-120b,groq,,95.0,1,A,"The student correctly implemented the selection sort algorithm, which has an O(n^2) time complexity. This approach is perfectly efficient and appropriate for the given constraint of n < 25.","The `argmin` function, when called within the `sort` function, correctly identifies the minimum element's index in the remaining unsorted portion of the array. | The overall algorithm is a standard Selection Sort, which has a time complexity of O(n^2) and space complexity of O(n). | For n < 25, an O(n^2) algorithm is highly efficient and will execute almost instantaneously, well within typical time limits. | The use of a Variable Length Array (VLA) `int A[n];` is a non-standard C++ feature (though commonly supported by compilers like g++), but it does not impact the algorithmic complexity or performance for these small constraints.",gemini-2.5-flash,gemini,,"Write a C++ program to sort an array A of n numbers strictly using the given algorithm:
+
+1. Find the minimum element in the array.
+2. Swap the minimum element with the first element of the array.
+3. Find the minimum element in the remaining array.
+4. Swap the minimum element with the second element of the array.
+5. Repeat steps 3 and 4 until the entire array is sorted.
+
+Constraints:
+
+* n < 25
+
+Input Format:
+
+* Non-negative integer n
+* Array A of n elements
+
+Output Format:
+
+* Print the sorted array with a space between adjacent elements.","#include<iostream>
+using namespace std;
+int n;
+int argmin(int A[],int x){
+	int minval=n-1;
+	for(int i=n-2;i>=n-x;i--){
+		if(A[minval]>A[i]){minval=i;}
+	}return minval;}
+
+void sort(int A[],int n){
+	for(int i=0;i<n-1;i++)
+	{int minval=argmin(A,n-i);
+	 int temp=A[minval];
+	A[minval]=A[i];
+	A[i]=temp;}
+}
+int main(){
+	cin>>n;
+	int A[n];for(int i=0;i<n;i++){cin>>A[i];}
+	sort(A,n);
+    for(int j=0;j<n;j++){cout<<A[j]<<"" "";}
+}"
+2026-09-12T15:10:13.020062+00:00,all_samples:2,mix:mixed,gemini-2.5-flash | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Overall program correctness,A,A,91.3,0.9138,100,1,A,The program correctly computes LCM using Euclidean algorithm for GCD and passes inputs to the function as required.,,poolside/laguna-xs-2.1,nvidia,,78.0,0.9,B,"The code is well-structured, cleanly formatted, and uses descriptive naming for functions and variables, but it completely lacks comments, which significantly impacts readability and maintainability for a CS1 student.","No comments are present in the code, which makes understanding the `lcm` function's internal logic (Euclidean algorithm for GCD) less straightforward without prior explanation. | The variable `k` could be given a more descriptive name like `product` for improved clarity, though its purpose is inferable from context. | The use of `simplecpp` specific constructs (`#include<simplecpp>`, `main_program`) is noted but assumed to be appropriate for the given programming environment.",gemini-2.5-flash,gemini,,92.0,0.95,A,The program correctly implements LCM calculation using a GCD helper and adheres to the required structure.,"Potential integer overflow in k = m*n for very large inputs, but not addressed in the problem constraints. | No explicit return type for main_program, but simplecpp handles this automatically.",openai/gpt-oss-120b,groq,,92.0,0.9,A,"The program compiles, follows the required structure, and correctly computes the LCM for all positive integer inputs within typical int ranges.",,openai/gpt-oss-120b,groq,,78.0,0.9,B,"The student's solution correctly implements the LCM using the efficient Euclidean algorithm for GCD, resulting in optimal time complexity. However, the intermediate product `m*n` can overflow standard integer types for moderately large inputs, which is a significant robustness flaw.","The algorithm correctly uses the Euclidean algorithm to find the Greatest Common Divisor (GCD), which has an optimal time complexity of O(log(min(A,B))). | The Least Common Multiple (LCM) is correctly computed using the formula `LCM(A,B) = (A*B)/GCD(A,B)`. | The intermediate product `m*n` (stored in `k`) can overflow a 32-bit signed integer if `m` and `n` are sufficiently large (e.g., both greater than approximately 45,000), leading to incorrect results. A more robust implementation would compute `(m / gcd(m, n)) * n` or use a larger integer type like `long long` for the product.",gemini-2.5-flash,gemini,,"Write a program that takes two positive integers A and B as input, passes them to a function that computes the LCM, and finally prints the result in the main function.","#include<simplecpp>
+int lcm(int m, int n){
+	int k = m*n;
+	while(m%n!=0){
+		int temp = m%n;
+		m = n;
+		n = temp;
+	}
+	return k/n;
+}
+main_program{
+	int A,B;
+	cin>>A>>B;
+	cout<<lcm(A,B);
+}"

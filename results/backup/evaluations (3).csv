@@ -1,0 +1,1437 @@
+timestamp_utc,sample_id,preset,judge_model,judge_provider,criterion,ground_truth,predicted_grade,total_score,overall_confidence,correctness_score,correctness_confidence,correctness_grade,correctness_summary,correctness_findings,correctness_model,correctness_provider,correctness_error,style_score,style_confidence,style_grade,style_summary,style_findings,style_model,style_provider,style_error,counteragent_score,counteragent_confidence,counteragent_grade,counteragent_summary,counteragent_findings,counteragent_model,counteragent_provider,counteragent_error,edge_cases_score,edge_cases_confidence,edge_cases_grade,edge_cases_summary,edge_cases_findings,edge_cases_model,edge_cases_provider,edge_cases_error,complexity_score,complexity_confidence,complexity_grade,complexity_summary,complexity_findings,complexity_model,complexity_provider,complexity_error,question,submission
+2026-09-12T15:46:30.180239+00:00,all_samples:40,mix:mixed,gemini-3.1-flash-lite | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Eg Use of functions beyond what was instructed or any other nice quality,B,D,27.75,0.5099,0.0,0.0,,Agent call failed.,,poolside/laguna-xs-2.1,nvidia,"openai_compat request failed: 503 {""error"":{""message"":""ResourceExhausted: Worker local total request limit reached (43/32)"",""type"":""Service Unavailable"",""code"":503}}",65.0,0.9,B,"The program correctly implements the logic to identify Sundays, but it uses highly repetitive and non-idiomatic code structure instead of loops or arrays.","The code is extremely repetitive, manually writing out logic for each of the 12 months. | The use of 'simplecpp' is non-standard for general C++ environments, though acceptable in specific academic contexts. | The logic for leap years is correct. | The code lacks modularity; using an array for days-in-month would have significantly improved readability and maintainability. | The 'while(true)' loops with 'break' statements are a poor substitute for a standard loop structure.",gemini-3.1-flash-lite,gemini,,30.0,0.92,D,"The program contains major compilation errors and non‑standard constructs, despite a reasonable attempt at the core logic.","Uses non‑standard header `#include<simplecpp>` and the non‑standard entry point `main_program` instead of `int main()`, so it will not compile on a typical C++ compiler. | Missing `using namespace std;` or `std::` qualifiers for `cin`, `cout`, causing undefined identifiers. | No return statement from `main`, violating the required signature. | The month handling is hard‑coded with twelve nearly identical while‑loops, which is poor style and error‑prone. | Input constraint for `d` is mis‑documented (should be 1‑7) but the code does not validate it. | Relies on the custom `simplecpp` library; if unavailable, the program fails. | Although the leap‑year function is correct, the overall program is unlikely to run in the intended environment.",openai/gpt-oss-120b,groq,,35.0,0.78,D,"The program contains a correct logical approach for finding Sundays, but it uses non‑standard headers and an invalid main definition, so it will not compile.","Uses #include<simplecpp> and main_program instead of standard <iostream> and int main(), causing compilation failure. | Logic for calculating first Sunday and month transitions is correct for typical inputs. | Handles leap years correctly with isleap function. | No explicit handling for out‑of‑range inputs, but not required by spec. | Potential infinite loops are broken correctly, but reliance on break makes flow fragile.",openai/gpt-oss-120b,groq,,55.0,0.9,C,"The program correctly implements the leap year logic and identifies Sundays, but it uses highly repetitive, non-idiomatic code instead of loops or arrays to handle months.","The code is extremely verbose, repeating the same logic 12 times instead of using a loop or an array to store month lengths. | The logic for calculating the next Sunday is correct and efficient enough for the given constraints. | The use of 'simplecpp' suggests a specific educational environment, but the implementation style is poor practice. | The program does not handle the case where the first Sunday might be in the next month correctly if the logic were more complex, though it works for this specific problem.",gemini-3.1-flash-lite,gemini,,"Write a C++ program to take two inputs from the user, the year N, and d, the day of the week that January 1st falls on. Assume that the days are encoded as follows: (Mon: 1, Tues: 2, Wed: 3,   Sun: 7). Based on this, print all the dates on which Sunday falls on in that year.You must also take into account if the year is a leap year or not. The year is said to be a leap year if the year is divisible by four, except for end-of-century years where the year should be divisible by 400.
+
+Example:Let s say you were interested in finding out all the dates when Sunday is going to be this year i.e. 2024, then the input to your code should be:2024 1Explanation for the above input: 2024 is the year and 1st Jan happened to be on Monday this year, hence was number-encoded as 1The output should list the dates of all Sundays in the year N, month-wise on a new line.
+
+Constraints (Assume)1000 <= N (Year) <= 35001 <= d <= 12","#include<simplecpp>
+bool isleap(int y){
+	if(y%400==0){
+		return true;
+	}
+	else if(y%100!=0&&y%4==0){
+		return true;
+	}
+	else{
+		return false;
+	}
+	}
+
+
+main_program{
+int year,pehladin;
+cin>>year>>pehladin;
+int month=1;
+int current_sunday = 8-pehladin;
+
+cout<<""Month 1:"";
+while (true){
+	if (month==1){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 2:"";
+while (true){
+	if (month==2){
+		if(current_sunday>29&&isleap(year)){
+			month+=1;
+			current_sunday= current_sunday-29;
+			cout<<endl;
+			break;
+			}
+		else if(current_sunday>28&&!isleap(year)){
+			month+=1;
+			current_sunday= current_sunday-28;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 3:"";
+while (true){
+	if (month==3){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 4:"";
+while (true){
+	if (month==4){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 5:"";
+while (true){
+	if (month==5){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 6:"";
+while (true){
+	if (month==6){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 7:"";
+while (true){
+	if (month==7){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 8:"";
+while (true){
+	if (month==8){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 9:"";
+while (true){
+	if (month==9){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 10:"";
+while (true){
+	if (month==10){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 11:"";
+while (true){
+	if (month==11){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 12:"";
+while (true){
+	if (month==12){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+
+
+}"
+2026-09-12T15:46:55.138621+00:00,all_samples:41,mix:mixed,gemini-3.1-flash-lite | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Quality and number of comments,B,D,34.25,0.8416,0,1,D,"The program has critical bugs: it uses the index 'i' instead of arr[i] when finding the majority element, and it outputs only one element instead of all elements with maximum frequency as required.","The loop 'maj = i' should be 'maj = arr[i]' to get the actual element value, not the index | The output format is wrong - should print all elements with max frequency, one per line | The sample shows 3 elements with frequency 4, but program would output wrong values | No comments present despite rubric focusing on comments | Variable 'max' shadows std::max function (minor issue)",poolside/laguna-xs-2.1,nvidia,,65.0,0.9,C,The code correctly implements the logic to find the majority element but fails to meet the output format requirements and lacks sufficient comments.,"The code only outputs the first majority element found, whereas the sample output implies all elements with the maximum frequency should be printed. | The code lacks descriptive comments explaining the logic, which was a specific focus criterion. | Variable naming is concise but could be more descriptive (e.g., 'occ' could be 'countOccurrences'). | The use of Variable Length Arrays (VLAs) like 'int arr[n]' is non-standard in C++ and should be avoided in favor of vectors. | The logic for finding the maximum frequency is sound, but the output loop is missing the logic to handle multiple elements with the same maximum frequency.",gemini-3.1-flash-lite,gemini,,35.0,0.97,D,"The program compiles only with non‑standard extensions, prints only a single majority element, and fails the sample I/O; comments are minimal.","Uses variable‑length arrays (int arr[n];) which are not valid C++ and cause undefined behavior on standard‑compliant compilers. | Algorithm computes frequencies correctly but only outputs one element (arr[maj] and freq[maj]) instead of all majority elements as required by the specification. | Fails the provided sample where three elements share the highest frequency; it would output only the first such element. | No handling for ties or verification that a unique majority exists, contrary to problem assumptions. | Comments are sparse: only brief inline notes without detailed explanation of the overall approach, which meets only a minimal “Ok” level per the rubric. | Missing newline after output and does not follow the required output format of separate lines for each element.",openai/gpt-oss-120b,groq,,55.0,0.78,C,"The program compiles on permissive compilers and includes some comments, but uses non‑standard VLA syntax and fails to meet output format and tie handling requirements.","Uses variable‑length arrays (int arr[n]) which are not standard C++ and may cause compilation errors. | Assumes a single majority element; does not handle ties, contrary to the sample output showing multiple elements with equal max frequency. | Outputs only one ""element frequency"" pair on a single line, while the specification expects each on a separate line. | No check for n being zero (though constraints say n>=1). | Comments are present but sparse; they cover basic loops but lack detailed explanation of algorithmic choices.",openai/gpt-oss-120b,groq,,65.0,0.95,C,"The program correctly identifies the most frequent element but fails to meet the output format requirements specified in the sample output, which expects all elements with the maximum frequency to be printed.","The program only prints one majority element, whereas the sample output shows multiple elements (3, 1, and 2 all appear 4 times). | The logic uses an O(n^2) approach, which is acceptable given the constraint n < 20. | The code lacks sufficient comments, failing the rubric's 'Well Commented' requirement. | The use of Variable Length Arrays (int arr[n]) is non-standard in C++ but works in most compilers.",gemini-3.1-flash-lite,gemini,,"Write a C++ program to take user input n, the size of a 1D integer array, followed by the array entries as inputs. The program should then determine the majority element of the array, i.e., the element which occurs the most often. It should then display the majority element and how many times it occurs in the array. You may assume that the array contains only non-negative numbers. You may also assume that the array contains only one majority element. 
+
+Input Format - Integers n, followed by elements of the integer-valued array.
+Output Format - Print the values of the majority elements followed by frequency (a separate line for each element). 
+
+Constraints
+n is a positive integer, n >= 1 and n < 20
+
+Sample input	12	3 1 2 1 2 3 2 1 3 3 2 1
+Sample output 	3 4	1 4	2 4","#include<iostream>
+using namespace std;
+
+int occ(int x, int arr[], int n){  //number of x in arr[] of size n
+	int ans=0;
+
+	for(int i=0; i<n; i++){
+
+		if(arr[i]==x) ans++;
+	}
+
+	return ans;
+}
+
+int main(){
+
+	int n;
+	cin>>n;
+	int arr[n], freq[n];
+
+	for(int i=0; i<n; i++){  //input
+
+		cin>>arr[i];
+	}
+
+	for(int i=0; i<n; i++){  //makes freq array
+
+		freq[i] = occ(arr[i], arr, n);
+	}
+
+	int maj, max=0;
+
+	for(int i=0; i<n; i++){  //finds max element of freq[]
+
+		if(freq[i]>max){
+
+			maj = i;
+			max = freq[i];
+		}
+	}
+
+	cout<<arr[maj]<<"" ""<<freq[maj];
+}"
+2026-09-12T15:46:58.363817+00:00,all_samples:42,mix:mixed,gemini-3.1-flash-lite | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Quality and number of Comments,B,D,27.25,0.6755,0,1,D,The program uses incorrect syntax (simplecpp header and main_program block) and fails to implement the required fraction addition formula (a*d + b*c)/(c*d).,Uses #include<simplecpp> which is not standard C++ | Uses main_program{} block which is not valid C++ syntax | Does not implement the required formula (a*d + b*c)/(c*d) for adding fractions | Computes (a/b)+(c/d) directly which is not the specified method | No comments present despite rubric focusing on comments | Missing return type for main function,poolside/laguna-xs-2.1,nvidia,,65.0,1,C,The code correctly computes the result but fails to follow the specific formula provided in the problem statement and lacks sufficient documentation.,"The student ignored the provided formula (a*d + b*c)/(b*d) and used (a/b) + (c/d) instead. | The code uses the non-standard 'simplecpp' library instead of 'iostream'. | Comments are present but do not explain the logic effectively or address the deviation from the required formula. | Formatting is acceptable, but the code is minimal and lacks professional structure.",gemini-3.1-flash-lite,gemini,,0.0,0.0,,Agent call failed.,,openai/gpt-oss-120b,groq,"openai_compat request failed: 429 {""error"":{""message"":""Rate limit reached for model `openai/gpt-oss-120b` in organization `org_01kp1bchyvf37sdgvj8s1vqntg` service tier `on_demand` on tokens per minute (TPM): Limit 8000, Used 6528, Requested 1573. Please try again in 757.5ms. Need more tokens? Upgrade to Dev Tier today at https://console.groq.com/settings/billing"",""type"":""tokens"",""code"":""rate_limit_exceeded""}}
+",55.0,0.78,C,The program computes the correct result but lacks proper edge‑case handling and has minimal comments.,Uses non‑standard header <simplecpp> instead of <iostream>. | No handling for division by zero when b or d is zero. | Comments are brief and do not explain the algorithm or edge cases. | Correctly avoids extra output text and prints only the result.,openai/gpt-oss-120b,groq,,65.0,0.95,C,The program correctly computes the result but ignores the specific formula provided in the prompt and lacks sufficient comments.,"The student used (a/b) + (c/d) instead of the requested formula (a*d + b*c)/(b*d). | The prompt explicitly requested the formula (a*d + b*c)/(b*d), which is mathematically equivalent but the student ignored the instruction. | The code lacks meaningful comments explaining the logic, failing the focus criterion. | The use of 'simplecpp' is non-standard but acceptable for basic I/O in some environments. | The program correctly avoids printing extra text as requested.",gemini-3.1-flash-lite,gemini,,"Write a C++ program to accept four numbers from the user a, b, c, and d and compute the addition of (a/b) with (c/d). The formula to compute the addition of two fractions is given below (a*d + b*c)/(c*d). Print the final value as output on the screen.
+
+Note: Do not write any C++ statements for printing general messages. For example, the following should NOT be present in your program:cout << ""Enter a number:"", cout << ""The computed answer is"", etc. In addition, do not print unnecessary spaces unless specified in the program. You just have to print the result.","#include<simplecpp>
+main_program{
+	float a,b,c,d;
+	cin>>a>>b>>c>>d;
+	//I have solved without making this into an equaton.
+	//simply (a/b)+(c/d).
+	cout<<(a/b)+(c/d);
+}"
+2026-09-12T15:51:01.625079+00:00,all_samples:40,mix:mixed,gemini-3.1-flash-lite | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Eg Use of functions beyond what was instructed or any other nice quality,B,D,44.1,0.7873,15.0,0.95,D,"The code has fundamental issues: wrong header, incorrect day calculation, and incomplete month handling. It only processes January and exits after the first month.",Uses non-standard header <simplecpp> instead of <iostream> | Day calculation 'current_sunday = 8 - pehladin' is incorrect for finding Sundays | Only January is processed; all other months' loops are unreachable due to break statement | Output format 'Month 1:' doesn't match required 'Month 1:' with dates on new lines | No handling for months beyond January | Logic error: breaks out of loop after first iteration in January,poolside/laguna-xs-2.1,nvidia,,55.0,0.9,C,"The program correctly implements the leap year logic and produces the expected output, but the code structure is highly repetitive and lacks abstraction.","The code uses excessive code duplication by manually writing a while loop for every single month instead of using an array or a loop to handle months. | The logic is functional and correctly handles leap years. | The use of 'simplecpp' is non-standard for general C++ environments, though acceptable in specific academic contexts. | The code is difficult to maintain due to the lack of modularity and repetitive blocks.",gemini-3.1-flash-lite,gemini,,55.0,0.78,C,"The program mostly computes Sundays correctly but relies on a non‑standard <simplecpp> header and macro, and has minor logical edge‑case issues.","Uses non‑standard header <simplecpp> and main_program macro, which will not compile in a standard C++ environment. | No #include <iostream> or using namespace std; required for standard I/O. | The February handling uses ""if (current_sunday > 28)"" which could print an invalid date (e.g., 29) in a non‑leap year. | Code is extremely repetitive; lacks functions or loops to reduce duplication, missing the ""extra nice qualities"" expected for higher grades. | No explicit return statement from main, relying on the macro to handle it.",openai/gpt-oss-120b,groq,,78.0,0.78,B,"The program correctly computes Sundays for valid inputs and handles leap years, but relies on a non‑standard header and does not validate the day code, which could cause incorrect output for out‑of‑range values.","Uses <simplecpp> instead of standard headers, which may not compile in a typical C++ environment. | Does not check that the day code d is within 1‑7; values >7 produce invalid dates (e.g., d=8 yields a Sunday on day 0). | Leap year logic is correct and month lengths are handled properly. | Repeated code blocks are functional but inefficient; no early exit or error handling for malformed input.",openai/gpt-oss-120b,groq,,45.0,0.9,C,"The program correctly identifies leap years and calculates Sundays, but it uses highly repetitive, non-idiomatic code that violates basic programming principles like DRY (Don't Repeat Yourself).","The logic is extremely redundant, with 12 nearly identical while-loops instead of using an array or a single loop structure. | The code is hard to maintain and prone to errors due to the manual repetition of month-length logic. | The use of `simplecpp` is non-standard for general C++ environments, though acceptable in specific academic contexts. | The algorithmic complexity is O(1) as the number of days in a year is constant, but the code structure is inefficient in terms of development and readability.",gemini-3.1-flash-lite,gemini,,"Write a C++ program to take two inputs from the user, the year N, and d, the day of the week that January 1st falls on. Assume that the days are encoded as follows: (Mon: 1, Tues: 2, Wed: 3,   Sun: 7). Based on this, print all the dates on which Sunday falls on in that year.You must also take into account if the year is a leap year or not. The year is said to be a leap year if the year is divisible by four, except for end-of-century years where the year should be divisible by 400.
+
+Example:Let s say you were interested in finding out all the dates when Sunday is going to be this year i.e. 2024, then the input to your code should be:2024 1Explanation for the above input: 2024 is the year and 1st Jan happened to be on Monday this year, hence was number-encoded as 1The output should list the dates of all Sundays in the year N, month-wise on a new line.
+
+Constraints (Assume)1000 <= N (Year) <= 35001 <= d <= 12","#include<simplecpp>
+bool isleap(int y){
+	if(y%400==0){
+		return true;
+	}
+	else if(y%100!=0&&y%4==0){
+		return true;
+	}
+	else{
+		return false;
+	}
+	}
+
+
+main_program{
+int year,pehladin;
+cin>>year>>pehladin;
+int month=1;
+int current_sunday = 8-pehladin;
+
+cout<<""Month 1:"";
+while (true){
+	if (month==1){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 2:"";
+while (true){
+	if (month==2){
+		if(current_sunday>29&&isleap(year)){
+			month+=1;
+			current_sunday= current_sunday-29;
+			cout<<endl;
+			break;
+			}
+		else if(current_sunday>28&&!isleap(year)){
+			month+=1;
+			current_sunday= current_sunday-28;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 3:"";
+while (true){
+	if (month==3){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 4:"";
+while (true){
+	if (month==4){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 5:"";
+while (true){
+	if (month==5){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 6:"";
+while (true){
+	if (month==6){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 7:"";
+while (true){
+	if (month==7){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 8:"";
+while (true){
+	if (month==8){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 9:"";
+while (true){
+	if (month==9){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 10:"";
+while (true){
+	if (month==10){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 11:"";
+while (true){
+	if (month==11){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 12:"";
+while (true){
+	if (month==12){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+
+
+}"
+2026-09-12T15:51:05.415761+00:00,all_samples:41,mix:mixed,gemini-3.1-flash-lite | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Quality and number of comments,B,D,45.65,0.5112,0.0,0.0,,Agent call failed.,,poolside/laguna-xs-2.1,nvidia,Could not parse JSON from LLM output: Extra data: line 1 column 980 (char 979),65.0,0.95,C,"The code correctly implements the logic to find the most frequent element, but it fails to meet the output format requirements specified in the problem description.","The code only prints the single most frequent element, whereas the problem requires printing all elements that share the maximum frequency. | Comments are present but sparse, providing only minimal context for the logic. | Variable naming is clear and the structure is logical for a beginner. | The use of a variable-length array (VLA) is non-standard in C++ but acceptable for this specific constraint range.",gemini-3.1-flash-lite,gemini,,75.0,0.88,B,The code includes a few inline comments but lacks thorough documentation and has correctness and portability issues.,"Uses variable-length arrays (int arr[n]) which are not standard C++ and may cause compilation errors. | Only prints a single majority element; does not handle cases where multiple elements share the highest frequency as shown in the sample output. | Comments are sparse, covering only obvious steps without explaining overall algorithm or edge cases. | Variable 'maj' stores an index, but the naming could be clearer; also not initialized before the loop (though logic ensures assignment).",openai/gpt-oss-120b,groq,,72.0,0.85,B,"The program correctly computes the most frequent element for valid inputs and handles typical edge cases within the given constraints, but uses non‑standard VLA syntax and has only moderate commenting.","Uses variable length arrays (int arr[n]) which are not standard C++. | Does not handle n = 0 (undefined behavior), though spec requires n >= 1. | Selects the first occurrence when multiple elements share the maximum frequency, which may not match the sample output for tie cases. | Comments are present but brief; they cover loops and function purpose but lack detailed explanation, fitting a B rating.",openai/gpt-oss-120b,groq,,65.0,0.9,C,"The program correctly identifies the majority element but fails to meet the output format requirements specified in the problem statement. The code is poorly commented, lacking explanation of the logic or variable purposes.","The output format requires printing all elements that share the maximum frequency, but the code only prints the first one found. | The time complexity is O(n^2) due to the nested loop structure (calling occ inside a loop), which is acceptable given n < 20. | The code lacks sufficient comments, failing the instructor's rubric for 'Well Commented' code. | The use of Variable Length Arrays (VLAs) like 'int arr[n]' is non-standard in C++ but works in most compilers.",gemini-3.1-flash-lite,gemini,,"Write a C++ program to take user input n, the size of a 1D integer array, followed by the array entries as inputs. The program should then determine the majority element of the array, i.e., the element which occurs the most often. It should then display the majority element and how many times it occurs in the array. You may assume that the array contains only non-negative numbers. You may also assume that the array contains only one majority element. 
+
+Input Format - Integers n, followed by elements of the integer-valued array.
+Output Format - Print the values of the majority elements followed by frequency (a separate line for each element). 
+
+Constraints
+n is a positive integer, n >= 1 and n < 20
+
+Sample input	12	3 1 2 1 2 3 2 1 3 3 2 1
+Sample output 	3 4	1 4	2 4","#include<iostream>
+using namespace std;
+
+int occ(int x, int arr[], int n){  //number of x in arr[] of size n
+	int ans=0;
+
+	for(int i=0; i<n; i++){
+
+		if(arr[i]==x) ans++;
+	}
+
+	return ans;
+}
+
+int main(){
+
+	int n;
+	cin>>n;
+	int arr[n], freq[n];
+
+	for(int i=0; i<n; i++){  //input
+
+		cin>>arr[i];
+	}
+
+	for(int i=0; i<n; i++){  //makes freq array
+
+		freq[i] = occ(arr[i], arr, n);
+	}
+
+	int maj, max=0;
+
+	for(int i=0; i<n; i++){  //finds max element of freq[]
+
+		if(freq[i]>max){
+
+			maj = i;
+			max = freq[i];
+		}
+	}
+
+	cout<<arr[maj]<<"" ""<<freq[maj];
+}"
+2026-09-12T15:51:07.771349+00:00,all_samples:42,mix:mixed,gemini-3.1-flash-lite | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Quality and number of Comments,B,D,37.85,0.8073,0,1,D,"The program uses an incorrect header file (simplecpp) and wrong syntax (main_program instead of int main()), and does not implement the fraction addition formula (a*d + b*c)/(c*d) as specified.",Uses non-standard header file <simplecpp> instead of <iostream> | Uses main_program instead of int main() function signature | Does not implement the required formula (a*d + b*c)/(c*d) for fraction addition | Uses float instead of appropriate numeric type for fraction operations | Missing return statement in main function,poolside/laguna-xs-2.1,nvidia,,65.0,0.9,C,The program correctly computes the result but fails to follow the specific formula provided in the instructions and lacks sufficient documentation.,"The student ignored the specific formula (a*d + b*c)/(b*d) provided in the prompt, opting for a direct floating-point division instead. | The code uses a non-standard header 'simplecpp' which is not part of the standard C++ library. | Comments are present but do not explain the logic effectively or address the requirement to use the specified formula. | Formatting is acceptable, but the code lacks professional structure for a CS1 student.",gemini-3.1-flash-lite,gemini,,60.0,0.78,C,"The program produces the correct numeric result but uses a non‑standard header and provides only minimal comments, failing the rubric's comment quality criteria.","Uses <simplecpp> and main_program macro, which are not standard C++ and may not compile in a typical environment. | Comments are sparse and do not explain the algorithm or edge cases, violating the rubric's emphasis on good commenting. | No checks for division by zero, which could cause runtime errors for inputs where b or d are zero. | Computes (a/b)+(c/d) directly with floating‑point arithmetic; while mathematically correct, it does not follow the explicit fraction formula requested.",openai/gpt-oss-120b,groq,,48.0,0.78,D,"The program computes the sum correctly for normal inputs but lacks handling of division‑by‑zero edge cases and has minimal commenting, resulting in a poor overall rating.","Uses non‑standard header <simplecpp> instead of <iostream>. | No checks for b or d being zero, leading to potential runtime errors. | Comments are sparse and do not explain the algorithm or edge‑case handling. | Formatting is minimal; no indentation or spacing conventions applied.",openai/gpt-oss-120b,groq,,65.0,0.95,C,The program correctly computes the result but fails to follow the specific formula provided in the prompt and lacks sufficient comments.,"The student ignored the explicit formula (a*d + b*c)/(b*d) provided in the prompt, opting for a simpler floating-point division approach. | The code lacks meaningful comments explaining the logic or the variables, failing the focus criterion. | The program correctly avoids printing extra messages as requested. | The use of 'simplecpp' is non-standard but acceptable for this context.",gemini-3.1-flash-lite,gemini,,"Write a C++ program to accept four numbers from the user a, b, c, and d and compute the addition of (a/b) with (c/d). The formula to compute the addition of two fractions is given below (a*d + b*c)/(c*d). Print the final value as output on the screen.
+
+Note: Do not write any C++ statements for printing general messages. For example, the following should NOT be present in your program:cout << ""Enter a number:"", cout << ""The computed answer is"", etc. In addition, do not print unnecessary spaces unless specified in the program. You just have to print the result.","#include<simplecpp>
+main_program{
+	float a,b,c,d;
+	cin>>a>>b>>c>>d;
+	//I have solved without making this into an equaton.
+	//simply (a/b)+(c/d).
+	cout<<(a/b)+(c/d);
+}"
+2026-09-12T15:55:24.226961+00:00,all_samples:40,mix:mixed,gemini-3.1-flash-lite | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Eg Use of functions beyond what was instructed or any other nice quality,B,D,31.85,0.7902,0,0.9,D,The code is incomplete - it only handles January and has no logic to continue to other months. The code also uses a non-standard header file and has syntax issues.,"Code only processes month 1 (January) and exits the loop without handling remaining months | Uses non-standard header file 'simplecpp' which is not standard C++ | main_program is not valid C++ syntax - should be 'int main()' | Variable names are unclear (pehladin, current_sunday) | No output for months 2-12 despite having code blocks for them | The logic for finding Sundays is fundamentally flawed - it doesn't properly track day of week progression",poolside/laguna-xs-2.1,nvidia,,55.0,0.9,C,"The program correctly implements the logic to identify Sundays, but it uses highly repetitive, non-DRY code that is difficult to maintain.","The code suffers from extreme code duplication; the same logic is copy-pasted 12 times instead of using a loop or an array to store month lengths. | The use of 'simplecpp' is non-standard for general C++ environments, though acceptable in specific academic contexts. | The logic for leap years is correct and encapsulated in a function, which is a positive practice. | The program is difficult to read and maintain due to the lack of abstraction for month-handling logic.",gemini-3.1-flash-lite,gemini,,30.0,0.92,D,"The program contains major syntactic and compilation errors and does not conform to standard C++ conventions, despite attempting the correct leap‑year logic.","Uses non‑standard header `#include<simplecpp>` instead of `<iostream>`; will not compile on a typical C++ compiler. | Defines `main_program` instead of a proper `int main()` function, missing return type and braces for a valid entry point. | References `cin` and `cout` without qualifying with `std::` or `using namespace std;` leading to undefined identifiers. | Relies on a series of infinite `while(true)` loops with manual `break`s; this is fragile and unnecessary. | The input constraint for `d` is mis‑documented (should be 1‑7), but the code does not validate the range. | Output format does not exactly match the specification (extra ""Month X:"" labels and spacing). | Overall, the code would fail to compile, so it cannot be judged on runtime correctness.",openai/gpt-oss-120b,groq,,68.0,0.78,C,"The program correctly computes Sundays for typical valid inputs, but it lacks input validation, uses a non‑standard header, and fails on out‑of‑range day codes.","Assumes day code d is 1‑7; if d is outside this range (allowed by the given constraints), current_sunday becomes zero or negative, producing invalid dates. | Uses #include<simplecpp> instead of standard iostream, which may not compile in a standard C++ environment. | No explicit return statement or standard main function signature; relies on simplecpp's main_program construct. | Repeated code blocks for each month make the program verbose but functionally correct for valid inputs. | Leap year calculation is correct.",openai/gpt-oss-120b,groq,,45.0,0.9,C,"The program correctly identifies leap years and calculates Sundays, but it uses highly repetitive, non-idiomatic code instead of loops or arrays to handle months.","The code is extremely verbose, repeating the same logic 12 times instead of using a loop or an array to store month lengths. | The logic for calculating the next month's first Sunday is correct, but the implementation is fragile and hard to maintain. | The use of 'simplecpp' is non-standard for general C++ environments, though acceptable in some academic contexts. | The algorithmic complexity is O(1) as the number of months is fixed, but the code quality is poor due to lack of abstraction.",gemini-3.1-flash-lite,gemini,,"Write a C++ program to take two inputs from the user, the year N, and d, the day of the week that January 1st falls on. Assume that the days are encoded as follows: (Mon: 1, Tues: 2, Wed: 3,   Sun: 7). Based on this, print all the dates on which Sunday falls on in that year.You must also take into account if the year is a leap year or not. The year is said to be a leap year if the year is divisible by four, except for end-of-century years where the year should be divisible by 400.
+
+Example:Let s say you were interested in finding out all the dates when Sunday is going to be this year i.e. 2024, then the input to your code should be:2024 1Explanation for the above input: 2024 is the year and 1st Jan happened to be on Monday this year, hence was number-encoded as 1The output should list the dates of all Sundays in the year N, month-wise on a new line.
+
+Constraints (Assume)1000 <= N (Year) <= 35001 <= d <= 12","#include<simplecpp>
+bool isleap(int y){
+	if(y%400==0){
+		return true;
+	}
+	else if(y%100!=0&&y%4==0){
+		return true;
+	}
+	else{
+		return false;
+	}
+	}
+
+
+main_program{
+int year,pehladin;
+cin>>year>>pehladin;
+int month=1;
+int current_sunday = 8-pehladin;
+
+cout<<""Month 1:"";
+while (true){
+	if (month==1){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 2:"";
+while (true){
+	if (month==2){
+		if(current_sunday>29&&isleap(year)){
+			month+=1;
+			current_sunday= current_sunday-29;
+			cout<<endl;
+			break;
+			}
+		else if(current_sunday>28&&!isleap(year)){
+			month+=1;
+			current_sunday= current_sunday-28;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 3:"";
+while (true){
+	if (month==3){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 4:"";
+while (true){
+	if (month==4){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 5:"";
+while (true){
+	if (month==5){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 6:"";
+while (true){
+	if (month==6){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 7:"";
+while (true){
+	if (month==7){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 8:"";
+while (true){
+	if (month==8){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 9:"";
+while (true){
+	if (month==9){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 10:"";
+while (true){
+	if (month==10){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 11:"";
+while (true){
+	if (month==11){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 12:"";
+while (true){
+	if (month==12){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+
+
+}"
+2026-09-12T15:56:36.360043+00:00,all_samples:41,mix:mixed,gemini-3.1-flash-lite | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Quality and number of comments,B,D,45.25,0.7996,0,1,D,"The program has fundamental logic errors: it outputs only one element instead of all elements with their frequencies, and the majority element calculation is incorrect.","The problem requires outputting all elements with their frequencies, but the code only outputs one element | The logic for finding the majority element is wrong - it uses index 'maj' instead of the actual element value | The output format is incorrect - should be 'element frequency' on separate lines for each element | The code finds the index of max frequency but outputs arr[maj] which is not the element with max frequency | The sample shows all three elements (3, 1, 2) each appearing 4 times, but code only outputs one line",poolside/laguna-xs-2.1,nvidia,,65.0,0.9,C,"The code correctly implements the logic to find the most frequent element, but it fails to meet the output format requirements and has minimal, informal comments.","The program only outputs the single most frequent element, whereas the problem statement requires printing all elements that share the maximum frequency. | Comments are present but are sparse and informal (e.g., 'input', 'makes freq array'), failing to meet the 'Well Commented' rubric criteria. | The code uses Variable Length Arrays (VLAs), which are not standard C++. | The logic for finding the majority element is functional but inefficient (O(n^2)). | The output format does not match the sample output provided in the prompt.",gemini-3.1-flash-lite,gemini,,75.0,0.85,B,"The code includes a few inline comments, enough for basic understanding but not thorough, earning an OK comment rating.","Uses variable-length arrays (int arr[n]) which are not standard C++ and may cause compilation errors. | Only outputs a single majority element, whereas the sample output shows multiple elements with the same highest frequency. | No newline after the output, which may not match the required format of separate lines. | Does not handle the case of multiple elements sharing the maximum frequency, despite the problem's sample indicating such a scenario. | Comments are sparse and only describe obvious steps; more detailed explanations of the algorithm would be needed for a higher rating.",openai/gpt-oss-120b,groq,,70.0,0.78,B,"The program includes some comments and works for basic cases, but uses non‑standard VLA syntax and fails to handle tie cases or fully follow the output format.","Only a few brief comments are present, meeting an ""ok"" level of documentation. | Uses variable‑length arrays (int arr[n];) which are not standard C++ and may not compile on strict compilers. | Assumes a single majority element; does not output multiple elements with the same maximum frequency as shown in the sample. | No explicit handling of edge cases such as n=1 (works) or invalid input; silent failure if compilation issues arise.",openai/gpt-oss-120b,groq,,65.0,0.9,C,"The program correctly identifies the majority element but fails to meet the output format requirements specified in the problem statement. The code is poorly commented and uses an O(n^2) approach, which is acceptable given the small constraints but inefficient.","The output format requires printing all elements that share the maximum frequency, but the code only prints one. | The code uses an O(n^2) approach due to the nested loop structure, which is acceptable for n < 20. | The comments are minimal and do not meet the 'Well Commented' rubric requirement. | The use of Variable Length Arrays (VLAs) like 'int arr[n]' is non-standard in C++. | The logic fails to handle cases where multiple elements have the same maximum frequency, as it only tracks the first one found.",gemini-3.1-flash-lite,gemini,,"Write a C++ program to take user input n, the size of a 1D integer array, followed by the array entries as inputs. The program should then determine the majority element of the array, i.e., the element which occurs the most often. It should then display the majority element and how many times it occurs in the array. You may assume that the array contains only non-negative numbers. You may also assume that the array contains only one majority element. 
+
+Input Format - Integers n, followed by elements of the integer-valued array.
+Output Format - Print the values of the majority elements followed by frequency (a separate line for each element). 
+
+Constraints
+n is a positive integer, n >= 1 and n < 20
+
+Sample input	12	3 1 2 1 2 3 2 1 3 3 2 1
+Sample output 	3 4	1 4	2 4","#include<iostream>
+using namespace std;
+
+int occ(int x, int arr[], int n){  //number of x in arr[] of size n
+	int ans=0;
+
+	for(int i=0; i<n; i++){
+
+		if(arr[i]==x) ans++;
+	}
+
+	return ans;
+}
+
+int main(){
+
+	int n;
+	cin>>n;
+	int arr[n], freq[n];
+
+	for(int i=0; i<n; i++){  //input
+
+		cin>>arr[i];
+	}
+
+	for(int i=0; i<n; i++){  //makes freq array
+
+		freq[i] = occ(arr[i], arr, n);
+	}
+
+	int maj, max=0;
+
+	for(int i=0; i<n; i++){  //finds max element of freq[]
+
+		if(freq[i]>max){
+
+			maj = i;
+			max = freq[i];
+		}
+	}
+
+	cout<<arr[maj]<<"" ""<<freq[maj];
+}"
+2026-09-12T15:56:55.947816+00:00,all_samples:42,mix:mixed,gemini-3.1-flash-lite | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Quality and number of Comments,B,D,43.5,0.7997,15.0,0.9,D,"The program has wrong formula and wrong output format. It computes (a/b)+(c/d) directly instead of using the fraction addition formula (a*d + b*c)/(c*d), and outputs a float instead of the required fraction format.",Wrong formula: computes (a/b)+(c/d) directly instead of (a*d + b*c)/(c*d) | Wrong output format: outputs a floating point number instead of fraction (numerator/denominator) | Uses non-standard header simplecpp.h | Missing comments about the formula implementation | Does not print the result as a fraction as specified in the problem,poolside/laguna-xs-2.1,nvidia,,65.0,0.95,C,The program correctly computes the result but fails to follow the specific formula provided in the prompt and lacks sufficient comments.,"The student ignored the specific formula (a*d + b*c)/(b*d) provided in the instructions. | The code uses a non-standard library 'simplecpp' which is not part of the standard C++ library. | Comments are present but do not explain the logic effectively or address the requirement to use the provided formula. | Formatting is acceptable, but the code is minimal and lacks professional structure.",gemini-3.1-flash-lite,gemini,,65.0,0.78,C,"The program produces the correct numeric result but lacks proper comments and does not follow the prescribed formula, with minor robustness issues.","Uses the non‑standard <simplecpp> header and main_program construct instead of standard iostream and int main(). | Only two brief comments are present; they do not explain the algorithm or edge cases, violating the comment quality rubric. | The solution computes (a/b)+(c/d) directly rather than applying the required formula (a*d + b*c)/(b*d). | No checks for division by zero (b or d could be zero), which could cause runtime errors. | Uses float type, which may reduce precision compared to double.",openai/gpt-oss-120b,groq,,45.0,0.78,D,The program computes the sum using floating point division but lacks handling for division‑by‑zero and provides minimal comments.,"No checks for b or d being zero, leading to runtime errors on edge inputs. | Uses float arithmetic instead of the required fraction formula, which may affect precision. | Comments are sparse and do not explain the algorithm or edge‑case considerations. | Formatting is minimal; uses non‑standard <simplecpp> header but otherwise compiles.",openai/gpt-oss-120b,groq,,65.0,0.95,C,"The program correctly computes the result using floating-point arithmetic, but it ignores the specific formula provided in the prompt and lacks sufficient comments.","The student used (a/b) + (c/d) instead of the requested formula (a*d + b*c)/(b*d). | The code lacks meaningful comments explaining the logic, failing the focus criterion. | The program correctly avoids printing extra text as per instructions. | The use of float is appropriate for the task, though integer division issues were avoided by using floating-point types.",gemini-3.1-flash-lite,gemini,,"Write a C++ program to accept four numbers from the user a, b, c, and d and compute the addition of (a/b) with (c/d). The formula to compute the addition of two fractions is given below (a*d + b*c)/(c*d). Print the final value as output on the screen.
+
+Note: Do not write any C++ statements for printing general messages. For example, the following should NOT be present in your program:cout << ""Enter a number:"", cout << ""The computed answer is"", etc. In addition, do not print unnecessary spaces unless specified in the program. You just have to print the result.","#include<simplecpp>
+main_program{
+	float a,b,c,d;
+	cin>>a>>b>>c>>d;
+	//I have solved without making this into an equaton.
+	//simply (a/b)+(c/d).
+	cout<<(a/b)+(c/d);
+}"
+2026-09-12T16:14:31.779382+00:00,all_samples:40,mix:mixed,gemini-3.1-flash-lite | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Eg Use of functions beyond what was instructed or any other nice quality,B,D,39.45,0.7801,0,0.95,D,"The code does not compile due to using non-standard headers and incorrect syntax, and the logic is incomplete as it only handles January.","The code uses `#include<simplecpp>` which is not a standard C++ header file and will cause compilation errors. | The code uses `main_program` instead of the standard `int main()` function declaration. | The code does not include necessary headers like `<iostream>` for input/output operations. | The logic is incomplete - only the first while loop for January is written, but the subsequent loops for other months are missing their closing braces, making the code syntactically invalid. | Even if the code were syntactically correct, the approach of duplicating code for each month is inefficient and error-prone, but the fundamental approach of tracking Sundays by adding 7 days is conceptually correct.",poolside/laguna-xs-2.1,nvidia,,65.0,0.9,C,"The program correctly identifies leap years and calculates the Sundays, but the implementation is highly repetitive and lacks modularity.","The code uses a very repetitive structure, manually repeating logic for each of the 12 months instead of using a loop or an array to store days per month. | The logic for calculating leap years is correct. | The use of 'simplecpp' is noted, but the code structure is not maintainable for a CS1 student due to the excessive code duplication. | The output format is generally correct, but the hardcoded approach makes the program prone to errors if requirements were to change.",gemini-3.1-flash-lite,gemini,,38.0,0.78,D,"The program shows a correct overall algorithm for listing Sundays, but it does not compile due to missing standard headers, incorrect entry point, and non‑standard library usage.","Uses <simplecpp> and ""main_program"" instead of the standard <iostream> and int main(), causing compilation failure. | Does not qualify names (std::cin, std::cout) or include using namespace std, leading to undefined identifiers. | Relies on a non‑standard environment; the code would not compile on a typical C++ compiler. | Algorithmic logic is mostly correct (calculates first Sunday, iterates month by month), but the implementation is incomplete and non‑portable.",openai/gpt-oss-120b,groq,,78.0,0.85,B,"The program correctly computes and prints all Sundays for each month, handling leap years, but relies on a non‑standard library and lacks some standard includes.","Leap year function is correct. | First Sunday is calculated as 8 - d, which works for all d values 1‑7. | Repeated while‑true loops correctly advance month and adjust the date. | Uses #include<simplecpp> and main_program, which are not standard C++ and may not compile in a typical environment. | Missing #include <iostream> for cin/cout if simplecpp does not provide it. | No validation of input range or handling of unexpected d values beyond 1‑7. | Code is overly repetitive; could be simplified with arrays or loops.",openai/gpt-oss-120b,groq,,65.0,0.9,B,"The program correctly identifies leap years and calculates the Sundays, but the implementation is highly repetitive and lacks modularity.","The logic for leap year calculation is correct. | The code uses excessive code duplication by manually writing out the logic for each of the 12 months instead of using a loop or an array to store days per month. | The program is functional and meets the core requirements of the prompt. | The use of 'simplecpp' is acceptable given the context, but the structure is not idiomatic C++ for production or clean code standards.",gemini-3.1-flash-lite,gemini,,"Write a C++ program to take two inputs from the user, the year N, and d, the day of the week that January 1st falls on. Assume that the days are encoded as follows: (Mon: 1, Tues: 2, Wed: 3,   Sun: 7). Based on this, print all the dates on which Sunday falls on in that year.You must also take into account if the year is a leap year or not. The year is said to be a leap year if the year is divisible by four, except for end-of-century years where the year should be divisible by 400.
+
+Example:Let s say you were interested in finding out all the dates when Sunday is going to be this year i.e. 2024, then the input to your code should be:2024 1Explanation for the above input: 2024 is the year and 1st Jan happened to be on Monday this year, hence was number-encoded as 1The output should list the dates of all Sundays in the year N, month-wise on a new line.
+
+Constraints (Assume)1000 <= N (Year) <= 35001 <= d <= 12","#include<simplecpp>
+bool isleap(int y){
+	if(y%400==0){
+		return true;
+	}
+	else if(y%100!=0&&y%4==0){
+		return true;
+	}
+	else{
+		return false;
+	}
+	}
+
+
+main_program{
+int year,pehladin;
+cin>>year>>pehladin;
+int month=1;
+int current_sunday = 8-pehladin;
+
+cout<<""Month 1:"";
+while (true){
+	if (month==1){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 2:"";
+while (true){
+	if (month==2){
+		if(current_sunday>29&&isleap(year)){
+			month+=1;
+			current_sunday= current_sunday-29;
+			cout<<endl;
+			break;
+			}
+		else if(current_sunday>28&&!isleap(year)){
+			month+=1;
+			current_sunday= current_sunday-28;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 3:"";
+while (true){
+	if (month==3){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 4:"";
+while (true){
+	if (month==4){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 5:"";
+while (true){
+	if (month==5){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 6:"";
+while (true){
+	if (month==6){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 7:"";
+while (true){
+	if (month==7){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 8:"";
+while (true){
+	if (month==8){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 9:"";
+while (true){
+	if (month==9){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 10:"";
+while (true){
+	if (month==10){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 11:"";
+while (true){
+	if (month==11){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 12:"";
+while (true){
+	if (month==12){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+
+
+}"
+2026-09-12T16:17:30.981359+00:00,all_samples:41,mix:mixed,gemini-3.1-flash-lite | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Quality and number of comments,B,D,43.65,0.501,0.0,0.0,,Agent call failed.,,poolside/laguna-xs-2.1,nvidia,Could not parse JSON from LLM output: Extra data: line 1 column 809 (char 808),65.0,0.9,C,"The code correctly identifies the majority element and its frequency, but it fails to meet the output requirements specified in the sample output and lacks sufficient documentation.","The program only outputs one majority element, whereas the sample output shows multiple elements (3, 1, and 2 all appear 4 times). | The code lacks meaningful comments explaining the logic, which was a specific focus criterion. | The use of Variable Length Arrays (int arr[n]) is non-standard in C++ and should be avoided in favor of std::vector. | The logic for finding the majority element is functional but inefficient (O(n^2)). | The code is clean and readable, but the lack of comments results in a lower grade based on the instructor rubric.",gemini-3.1-flash-lite,gemini,,75.0,0.88,B,"The program includes a few brief comments that explain each major block, meeting the “ok commented” level but lacking depth and comprehensive documentation.","Only a handful of short comments are present; there is no overall description of the algorithm or its complexity. | Uses variable-length arrays (int arr[n]; int freq[n];) which are not standard C++ and may cause compilation errors on strict compilers. | Outputs the result without a newline, which may not match the expected line‑by‑line format. | No handling for the unlikely case of multiple elements sharing the maximum frequency (though the problem guarantees a unique majority). | Variable name 'maj' actually stores the index of the majority element, not the element itself, which could be clarified in comments.",openai/gpt-oss-120b,groq,,62.0,0.78,C,"The program compiles and finds a majority element, but it only outputs one element and lacks handling of ties, and comments are minimal.","Provides a few inline comments, but they are brief and not comprehensive. | Uses a variable-length array (int arr[n]) which is not standard C++. | Only prints a single majority element, whereas the sample output expects all elements with the highest frequency. | Does not handle the case of multiple elements sharing the maximum frequency. | Logic for finding the majority element works for the single-majority assumption.",openai/gpt-oss-120b,groq,,65.0,0.95,C,"The program correctly identifies the most frequent element but fails to meet the output requirements specified in the sample output, which expects all elements that share the maximum frequency.","The algorithm uses an O(n^2) approach, which is acceptable given the constraint n < 20. | The code fails to print all elements that share the maximum frequency, printing only the first one encountered. | The output format does not match the sample output requirement of printing multiple lines for elements sharing the same maximum frequency. | The code lacks sufficient comments, failing the 'Well Commented' rubric criterion. | The use of Variable Length Arrays (VLAs) like 'int arr[n]' is non-standard in C++ but generally accepted in competitive programming contexts.",gemini-3.1-flash-lite,gemini,,"Write a C++ program to take user input n, the size of a 1D integer array, followed by the array entries as inputs. The program should then determine the majority element of the array, i.e., the element which occurs the most often. It should then display the majority element and how many times it occurs in the array. You may assume that the array contains only non-negative numbers. You may also assume that the array contains only one majority element. 
+
+Input Format - Integers n, followed by elements of the integer-valued array.
+Output Format - Print the values of the majority elements followed by frequency (a separate line for each element). 
+
+Constraints
+n is a positive integer, n >= 1 and n < 20
+
+Sample input	12	3 1 2 1 2 3 2 1 3 3 2 1
+Sample output 	3 4	1 4	2 4","#include<iostream>
+using namespace std;
+
+int occ(int x, int arr[], int n){  //number of x in arr[] of size n
+	int ans=0;
+
+	for(int i=0; i<n; i++){
+
+		if(arr[i]==x) ans++;
+	}
+
+	return ans;
+}
+
+int main(){
+
+	int n;
+	cin>>n;
+	int arr[n], freq[n];
+
+	for(int i=0; i<n; i++){  //input
+
+		cin>>arr[i];
+	}
+
+	for(int i=0; i<n; i++){  //makes freq array
+
+		freq[i] = occ(arr[i], arr, n);
+	}
+
+	int maj, max=0;
+
+	for(int i=0; i<n; i++){  //finds max element of freq[]
+
+		if(freq[i]>max){
+
+			maj = i;
+			max = freq[i];
+		}
+	}
+
+	cout<<arr[maj]<<"" ""<<freq[maj];
+}"
+2026-09-12T16:17:33.711989+00:00,all_samples:42,mix:mixed,gemini-3.1-flash-lite | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Quality and number of Comments,B,D,40.25,0.8073,0,1,D,"The program uses an incorrect formula for adding fractions and has multiple issues including wrong header, missing return type, and incorrect approach.","The problem states the formula for adding fractions is (a*d + b*c)/(c*d), but the student implemented (a/b)+(c/d) which is mathematically different | The header file <simplecpp> is not standard C++ - should be <iostream> | The main_program is not standard C++ syntax - should be int main() | Using float for potentially integer inputs may cause precision issues | The comment 'I have solved without making this into an equation' shows misunderstanding of the required formula | The program does not implement the specified formula (a*d + b*c)/(c*d) for fraction addition",poolside/laguna-xs-2.1,nvidia,,65.0,0.9,C,The code correctly computes the result but fails to follow the specific formula provided in the prompt and lacks sufficient documentation.,"The student ignored the specific formula (a*d + b*c)/(b*d) provided in the prompt, opting for a direct floating-point division instead. | The code lacks meaningful comments explaining the logic, which was a specific focus criterion. | The code is formatted reasonably well, but the comments provided are trivial and do not describe the logic effectively. | The use of 'simplecpp' is non-standard for general C++ environments, though acceptable if the course uses that specific library.",gemini-3.1-flash-lite,gemini,,62.0,0.78,C,"The program computes the correct result and prints only the value, but it uses a non‑standard header, lacks proper main signature, and provides minimal, unhelpful comments.","Uses #include<simplecpp> instead of the standard <iostream>, which may not compile in a typical C++ environment. | The main_program construct is non‑standard; a proper int main() is expected. | Comments are present but do not explain the logic or formula, failing the comment quality criterion. | The solution adds the fractions directly rather than using the prescribed formula, though the result is mathematically equivalent. | No explicit return statement, which is required for a standard main function.",openai/gpt-oss-120b,groq,,58.0,0.78,C,"The program computes the correct result but uses a non‑standard header, lacks zero‑denominator checks, and provides minimal, low‑quality comments.",Uses <simplecpp> instead of standard <iostream> which may not be accepted. | Implements addition as (a/b)+(c/d) rather than the required (a*d + b*c)/(c*d) formula. | No handling for division by zero when b or d equals zero. | Comments are brief and do not explain the logic or steps clearly.,openai/gpt-oss-120b,groq,,65.0,0.95,C,The student correctly computes the result but ignores the specific formula provided in the prompt and lacks sufficient comments.,"The program uses (a/b)+(c/d) instead of the requested (a*d + b*c)/(b*d) formula. | The code lacks meaningful comments explaining the logic, failing the rubric's focus criterion. | The program correctly handles input and output without extraneous text as requested. | The use of float is appropriate for the calculation, and the complexity is O(1).",gemini-3.1-flash-lite,gemini,,"Write a C++ program to accept four numbers from the user a, b, c, and d and compute the addition of (a/b) with (c/d). The formula to compute the addition of two fractions is given below (a*d + b*c)/(c*d). Print the final value as output on the screen.
+
+Note: Do not write any C++ statements for printing general messages. For example, the following should NOT be present in your program:cout << ""Enter a number:"", cout << ""The computed answer is"", etc. In addition, do not print unnecessary spaces unless specified in the program. You just have to print the result.","#include<simplecpp>
+main_program{
+	float a,b,c,d;
+	cin>>a>>b>>c>>d;
+	//I have solved without making this into an equaton.
+	//simply (a/b)+(c/d).
+	cout<<(a/b)+(c/d);
+}"
+2026-09-12T16:39:30.198807+00:00,all_samples:40,mix:mixed,gemini-3.1-flash-lite | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Eg Use of functions beyond what was instructed or any other nice quality,B,C,68.5,0.8328,75.0,0.9,C,"The code has the correct leap year logic and a reasonable approach to finding Sundays, but has significant issues with the starting day calculation and code structure that prevent it from working correctly.","The leap year function is correct: properly handles both regular leap years (divisible by 4) and century years (must be divisible by 400) | The approach of tracking Sundays by adding 7 days each time is fundamentally correct | Critical bug: The starting Sunday calculation 'current_sunday = 8 - pehladin' is wrong. For Monday (d=1), this gives 7, but Sunday is day 7, so Jan 1st would be Sunday, which is incorrect | The correct formula should be: if d=1 (Monday), Sunday is 6 days later, so first Sunday is on day 6. The formula should be: current_sunday = (7 - d + 1) % 7, with adjustment for 0 case | The code is highly repetitive with 12 nearly identical while loops - this should have been refactored into a function | The month variable is never actually incremented in the loops, so the loops would run infinitely if the break condition wasn't hit first | The output format doesn't match the requirement - should be 'Month X:' followed by dates, but the code outputs 'Month 1:' without proper formatting for subsequent months",poolside/laguna-xs-2.1,nvidia,,65.0,0.9,C,"The program correctly identifies leap years and calculates the Sundays, but it uses highly repetitive, non-DRY code that is difficult to maintain.","The logic for leap years is correct and encapsulated in a function. | The code is extremely repetitive, manually repeating the same logic for every month instead of using a loop or an array to store days per month. | The structure is fragile; if a requirement changed (e.g., formatting), the student would have to edit 12 separate blocks of code. | The use of 'simplecpp' is acceptable for this context, but the overall style lacks modularity and abstraction.",gemini-3.1-flash-lite,gemini,,70.0,0.78,B,"The program correctly computes and prints all Sunday dates for each month, handling leap years, but it uses non‑standard headers and an unconventional main definition.","Uses <simplecpp> and the macro main_program instead of the standard #include <iostream> and int main(), which may not compile in a typical C++ environment. | Relies on implicit std namespace (cin, cout) without using std:: or a using directive; this works only if simplecpp provides them. | The logic for calculating Sundays is correct and accounts for leap years, but the code is overly repetitive with many identical while‑true loops. | No explicit return statement from the program, which is required for a standard main function.",openai/gpt-oss-120b,groq,,60.0,0.78,C,"The program correctly computes the dates of Sundays for each month using the proper leap‑year logic, but it contains several non‑standard syntax errors that prevent it from compiling.",Uses non‑standard header <simplecpp> and the non‑standard entry point main_program instead of #include <iostream> and int main(). | Missing std:: qualifiers or a using namespace std; statement for cin and cout. | Relies on a library (simplecpp) that is unlikely to be available in a typical C++ environment. | Algorithm for calculating Sundays and handling leap years is correct. | Output format roughly matches the requirement (month label followed by dates).,openai/gpt-oss-120b,groq,,65.0,0.9,B,"The program correctly implements the leap year logic and identifies the Sundays, but it uses highly repetitive, non-idiomatic code that is difficult to maintain.","The logic for determining leap years is correct. | The code is extremely repetitive, manually repeating the logic for each of the 12 months instead of using a loop or an array to store days per month. | The use of 'simplecpp' is non-standard for general C++ environments, though acceptable in specific educational contexts. | The algorithmic complexity is O(1) as the number of operations is fixed regardless of the input year, which is optimal. | The code is prone to errors due to the lack of abstraction; a single logic change would require editing 12 separate blocks.",gemini-3.1-flash-lite,gemini,,"Write a C++ program to take two inputs from the user, the year N, and d, the day of the week that January 1st falls on. Assume that the days are encoded as follows: (Mon: 1, Tues: 2, Wed: 3,   Sun: 7). Based on this, print all the dates on which Sunday falls on in that year.You must also take into account if the year is a leap year or not. The year is said to be a leap year if the year is divisible by four, except for end-of-century years where the year should be divisible by 400.
+
+Example:Let s say you were interested in finding out all the dates when Sunday is going to be this year i.e. 2024, then the input to your code should be:2024 1Explanation for the above input: 2024 is the year and 1st Jan happened to be on Monday this year, hence was number-encoded as 1The output should list the dates of all Sundays in the year N, month-wise on a new line.
+
+Constraints (Assume)1000 <= N (Year) <= 35001 <= d <= 12","#include<simplecpp>
+bool isleap(int y){
+	if(y%400==0){
+		return true;
+	}
+	else if(y%100!=0&&y%4==0){
+		return true;
+	}
+	else{
+		return false;
+	}
+	}
+
+
+main_program{
+int year,pehladin;
+cin>>year>>pehladin;
+int month=1;
+int current_sunday = 8-pehladin;
+
+cout<<""Month 1:"";
+while (true){
+	if (month==1){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 2:"";
+while (true){
+	if (month==2){
+		if(current_sunday>29&&isleap(year)){
+			month+=1;
+			current_sunday= current_sunday-29;
+			cout<<endl;
+			break;
+			}
+		else if(current_sunday>28&&!isleap(year)){
+			month+=1;
+			current_sunday= current_sunday-28;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 3:"";
+while (true){
+	if (month==3){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 4:"";
+while (true){
+	if (month==4){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 5:"";
+while (true){
+	if (month==5){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 6:"";
+while (true){
+	if (month==6){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 7:"";
+while (true){
+	if (month==7){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 8:"";
+while (true){
+	if (month==8){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 9:"";
+while (true){
+	if (month==9){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 10:"";
+while (true){
+	if (month==10){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 11:"";
+while (true){
+	if (month==11){
+		if(current_sunday>30){
+			month+=1;
+			current_sunday= current_sunday-30;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+cout<<""Month 12:"";
+while (true){
+	if (month==12){
+		if(current_sunday>31){
+			month+=1;
+			current_sunday= current_sunday-31;
+			cout<<endl;
+			break;
+			}
+		else{
+			cout<<"" ""<<current_sunday;
+			current_sunday +=7;
+			}
+	
+		}
+}
+
+
+}"
+2026-09-12T16:39:33.087449+00:00,all_samples:41,mix:mixed,gemini-3.1-flash-lite | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Quality and number of comments,B,C,51.1,0.8281,15.0,0.9,D,"The code has a fundamental logic error in finding the majority element and produces incorrect output format, though it correctly reads input and counts frequencies.","The code finds the index of maximum frequency but outputs arr[maj] instead of the element with highest frequency - this is incorrect because the majority element should be the one with highest count, not the element at the index of max frequency | The output format is wrong - should print all elements with their frequencies, one per line, but currently only prints one line | The variable 'maj' stores an index but is used as if it stores the element value | The code doesn't handle the requirement to print all elements with their frequencies on separate lines",poolside/laguna-xs-2.1,nvidia,,65.0,0.95,C,"The code correctly identifies the majority element and its frequency, but fails to meet the output format requirements specified in the sample output and lacks sufficient documentation.","The program only outputs one majority element, whereas the sample output implies it should output all elements that share the maximum frequency. | The code lacks meaningful comments explaining the logic, which was a specific focus criterion. | The use of Variable Length Arrays (int arr[n]) is non-standard in C++ and should be avoided in favor of std::vector. | The logic for finding the maximum frequency is correct, but the output formatting does not match the sample output provided in the prompt.",gemini-3.1-flash-lite,gemini,,70.0,0.85,B,"The code includes a few brief comments, enough for basic understanding but not detailed, fitting the ""Ok Commented"" level.","Uses variable-length arrays (int arr[n];) which are not standard C++ and may not compile on strict compilers. | Comments are minimal; they label loops and the helper function but do not explain the overall algorithm or edge cases. | Does not handle the case of multiple elements sharing the maximum frequency, contrary to the sample output. | Output format lacks a newline and does not match the specification of printing each majority element on a separate line. | No validation for input size constraints or empty input beyond assuming n >= 1.",openai/gpt-oss-120b,groq,,78.0,0.96,B,"The program includes a few brief comments that explain major sections, but they are minimal and not detailed enough for an 'A' rating.","Three short comments are present (after input loop, frequency array creation, and max search). | Comments are terse and do not explain the overall algorithm or edge cases. | Uses a variable-length array (VLA), which is a non-standard C++ extension. | Logic correctly finds the majority element assuming a single majority as per the problem statement.",openai/gpt-oss-120b,groq,,65.0,0.95,C,"The program correctly identifies the most frequent element but fails to meet the output requirements specified in the sample output, which expects all elements that share the maximum frequency.","The algorithm uses an O(n^2) approach, which is acceptable given the constraint n < 20. | The code fails to output all elements that share the maximum frequency, as shown in the sample output (3 4, 1 4, 2 4). | The code lacks sufficient comments to meet the 'Well Commented' rating, providing only minimal labels. | The use of Variable Length Arrays (VLAs) is non-standard C++ but acceptable for this specific constraint level. | The logic correctly calculates frequencies but only prints the first occurrence of the maximum frequency found.",gemini-3.1-flash-lite,gemini,,"Write a C++ program to take user input n, the size of a 1D integer array, followed by the array entries as inputs. The program should then determine the majority element of the array, i.e., the element which occurs the most often. It should then display the majority element and how many times it occurs in the array. You may assume that the array contains only non-negative numbers. You may also assume that the array contains only one majority element. 
+
+Input Format - Integers n, followed by elements of the integer-valued array.
+Output Format - Print the values of the majority elements followed by frequency (a separate line for each element). 
+
+Constraints
+n is a positive integer, n >= 1 and n < 20
+
+Sample input	12	3 1 2 1 2 3 2 1 3 3 2 1
+Sample output 	3 4	1 4	2 4","#include<iostream>
+using namespace std;
+
+int occ(int x, int arr[], int n){  //number of x in arr[] of size n
+	int ans=0;
+
+	for(int i=0; i<n; i++){
+
+		if(arr[i]==x) ans++;
+	}
+
+	return ans;
+}
+
+int main(){
+
+	int n;
+	cin>>n;
+	int arr[n], freq[n];
+
+	for(int i=0; i<n; i++){  //input
+
+		cin>>arr[i];
+	}
+
+	for(int i=0; i<n; i++){  //makes freq array
+
+		freq[i] = occ(arr[i], arr, n);
+	}
+
+	int maj, max=0;
+
+	for(int i=0; i<n; i++){  //finds max element of freq[]
+
+		if(freq[i]>max){
+
+			maj = i;
+			max = freq[i];
+		}
+	}
+
+	cout<<arr[maj]<<"" ""<<freq[maj];
+}"
+2026-09-12T16:40:34.298973+00:00,all_samples:42,mix:mixed,gemini-3.1-flash-lite | openai/gpt-oss-120b | poolside/laguna-xs-2.1,gemini | groq | nvidia,Quality and number of Comments,B,D,48.2,0.8248,25.0,0.9,D,"The program has a fundamental misunderstanding of the problem requirements - it computes the sum directly instead of using the fraction addition formula, and uses an incorrect/non-standard header.",Uses non-standard header <simplecpp> instead of <iostream> | Does not implement the required formula (a*d + b*c)/(c*d) for adding fractions | Computes (a/b)+(c/d) directly which is not the intended approach | Missing proper namespace declarations for standard I/O | No comments explaining the fraction addition logic | Uses float instead of potentially more appropriate types for fractions | The comment about 'solving without making this into an equation' shows misunderstanding of the problem,poolside/laguna-xs-2.1,nvidia,,65.0,0.9,C,The program produces the correct output but ignores the specific formula provided in the instructions and lacks sufficient documentation.,"The student ignored the explicit formula (a*d + b*c)/(b*d) provided in the prompt. | The code lacks meaningful comments explaining the logic or the variables, failing the focus criterion. | The use of 'simplecpp' is non-standard for general C++ environments, though it works in specific educational contexts. | The code is concise and follows the negative constraints regarding output formatting.",gemini-3.1-flash-lite,gemini,,58.0,0.87,C,"The program computes the correct result but uses non‑standard SimpleCPP constructs and provides only minimal, low‑quality comments.","Uses #include<simplecpp> and main_program instead of standard #include <iostream> and int main(), which may not compile in a typical C++ environment. | Does not implement the required formula (a*d + b*c)/(c*d); it relies on direct floating‑point addition, which is mathematically equivalent but deviates from the specification. | Comments are sparse and uninformative, failing to explain the code or the algorithm, resulting in poor comment quality. | No check for division by zero (b or d could be zero), which could cause runtime errors. | Formatting is acceptable but not exemplary.",openai/gpt-oss-120b,groq,,58.0,0.78,C,"The program computes the correct result for typical inputs but uses non‑standard headers, lacks proper handling of zero denominators, and provides minimal, low‑quality comments.",Uses <simplecpp> instead of standard <iostream>. | Implements (a/b)+(c/d) directly rather than the required (a*d + b*c)/(c*d) formula. | No checks for division by zero when b or d are zero. | Comments are brief and do not explain the algorithm or code structure. | Output format matches the specification (no extra text).,openai/gpt-oss-120b,groq,,65.0,0.95,C,The student correctly computes the result but ignores the specific formula provided in the prompt and fails to meet the commenting/formatting rubric requirements.,"The program uses (a/b)+(c/d) instead of the requested (a*d + b*c)/(b*d) formula. | The code lacks meaningful comments explaining the logic, failing the rubric's focus criterion. | The use of simplecpp is non-standard but acceptable for this context. | The output matches the required format by avoiding extra text.",gemini-3.1-flash-lite,gemini,,"Write a C++ program to accept four numbers from the user a, b, c, and d and compute the addition of (a/b) with (c/d). The formula to compute the addition of two fractions is given below (a*d + b*c)/(c*d). Print the final value as output on the screen.
+
+Note: Do not write any C++ statements for printing general messages. For example, the following should NOT be present in your program:cout << ""Enter a number:"", cout << ""The computed answer is"", etc. In addition, do not print unnecessary spaces unless specified in the program. You just have to print the result.","#include<simplecpp>
+main_program{
+	float a,b,c,d;
+	cin>>a>>b>>c>>d;
+	//I have solved without making this into an equaton.
+	//simply (a/b)+(c/d).
+	cout<<(a/b)+(c/d);
+}"

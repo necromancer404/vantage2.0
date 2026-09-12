@@ -3,16 +3,25 @@
 
 presets:
   gemini:
-    label: Gemini 2.5 Flash (Google native)
+    label: Gemini 3.1 Flash-Lite
     provider: gemini
-    model: gemini-2.5-flash
+    model: gemini-3.1-flash-lite
     api_key_env: GEMINI_API_KEY
     base_url_env: GEMINI_BASE_URL
     base_url: https://generativelanguage.googleapis.com/v1beta
     temperature: 0.2
     max_tokens: 4096
     timeout_seconds: 120
-
+  gemini-3.5-flash-lite:
+    label: Gemini 3.5 Flash-Lite
+    provider: gemini
+    model: gemini-3.5-flash-lite
+    api_key_env: GEMINI_API_KEY
+    base_url_env: GEMINI_BASE_URL
+    base_url: https://generativelanguage.googleapis.com/v1beta
+    temperature: 0.2
+    max_tokens: 4096
+    timeout_seconds: 120
   groq:
     label: Groq GPT-OSS 120B
     provider: groq
@@ -43,6 +52,35 @@ presets:
     max_tokens: 4096
     timeout_seconds: 180
 
+  poolside/laguna-s-2.1:free:
+    label: Laguna s 2.1
+    provider: openrouter
+    model: poolside/laguna-s-2.1:free
+    api_key_env: OPENROUTER_API_KEY
+    base_url_env: OPENROUTER_BASE_URL
+    base_url: https://openrouter.ai/api/v1
+    max_tokens: 4096
+    timeout_seconds: 180
+  gemma-4:
+    label: Gemma 4 31B
+    provider: openrouter
+    model: google/gemma-4-31b-it:free
+    api_key_env: OPENROUTER_API_KEY
+    base_url_env: OPENROUTER_BASE_URL
+    base_url: https://openrouter.ai/api/v1
+    max_tokens: 4096
+    timeout_seconds: 180
+
+  kimi-k3:
+    label: Kimi K3
+    provider: nvidia
+    model: moonshotai/kimi-k3
+    api_key_env: NVIDIA_API_KEY
+    base_url_env: NVIDIA_BASE_URL
+    base_url: https://integrate.api.nvidia.com/v1
+    max_tokens: 4096
+    timeout_seconds: 180
+
   nvidia-laguna-xs:
     label: Laguna XS 2.1 via NVIDIA NIM
     provider: nvidia
@@ -61,7 +99,7 @@ presets:
     base_url_env: NVIDIA_BASE_URL
     base_url: https://integrate.api.nvidia.com/v1
     max_tokens: 4096
-    timeout_seconds: 180
+    timeout_seconds: 300
 
   moonshot-kimi-k3:
     label: Moonshot Kimi K3
@@ -89,7 +127,59 @@ presets:
     max_tokens: 4096
     timeout_seconds: 180
 
+  qwen3-8:
+    label: Qwen3 8B via Ollama
+    provider: ollama
+    model: qwen3:8b
+    api_key_env: OLLAMA_API_KEY
+    base_url_env: OLLAMA_BASE_URL
+    base_url: http://localhost:11434
+    max_tokens: 512
+    timeout_seconds: 180
+    extra_body:
+      think: false
+
+  qwen2.5-coder:14b:
+      label: Qwen2.5 14B via Ollama
+      provider: ollama
+      model: qwen2.5-coder:14b
+      api_key_env: OLLAMA_API_KEY
+      base_url_env: OLLAMA_BASE_URL
+      base_url: http://localhost:11434/v1
+      max_tokens: 4096
+      timeout_seconds: 180
+    
+  gemma3:12b:
+      label: gemma3:12b via Ollama
+      provider: ollama
+      model: gemma3:12b
+      api_key_env: OLLAMA_API_KEY
+      base_url_env: OLLAMA_BASE_URL
+      base_url: http://localhost:11434/v1
+      max_tokens: 4096
+      timeout_seconds: 180
+
+  deepseek-r1:8b :
+      label: deepseek-r1:8b  via Ollama
+      provider: ollama
+      model: deepseek-r1:8b
+      api_key_env: OLLAMA_API_KEY
+      base_url_env: OLLAMA_BASE_URL
+      base_url: http://localhost:11434/v1
+      max_tokens: 4096
+      timeout_seconds: 180
+
   cerebras:
+    label: Cerebras Qwen 3.8 27B
+    provider: cerebras
+    model: qwen-3.8-27b
+    api_key_env: CEREBRAS_API_KEY
+    base_url_env: CEREBRAS_BASE_URL
+    base_url: https://api.cerebras.ai/v1
+    max_tokens: 2048
+    timeout_seconds: 180
+
+  cerebras-gemma-4:
     label: Cerebras Gemma 4 31B
     provider: cerebras
     model: gemma-4-31b
@@ -123,13 +213,13 @@ test_suite:
 # Different model per agent. Default mix is `mixed`.
 mixes:
   mixed:
-    label: Gemma correctness, Gemini style/complexity, Cerebras edge/counter
+    label: Gemma correctness, Gemini style/complexity, Cerebras Qwen edge/counter
     agents:
-      correctness: nvidia-gemma-4
+      correctness: qwen3-8
       style: gemini
-      complexity: gemini
-      edge_cases: cerebras
-      counteragent: cerebras
+      complexity: gemini-3.5-flash-lite
+      edge_cases: gemini
+      counteragent: gemini-3.5-flash-lite
   mixed-nvidia:
     label: NVIDIA models split across agents
     agents:

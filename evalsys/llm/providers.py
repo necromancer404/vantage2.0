@@ -25,6 +25,15 @@ def _api_key(settings: LLMSettings) -> str:
     return os.getenv(settings.api_key_env, "")
 
 
+def _client_timeout(settings: LLMSettings) -> httpx.Timeout:
+    return httpx.Timeout(
+        connect=30.0,
+        read=settings.timeout_seconds,
+        write=30.0,
+        pool=30.0,
+    )
+
+
 def _http_error(prefix: str, exc: httpx.HTTPError) -> LLMError:
     detail = str(exc)
     if isinstance(exc, httpx.HTTPStatusError) and exc.response is not None:
@@ -103,7 +112,9 @@ class OpenAICompatProvider(LLMProvider):
         if self.settings.extra_body:
             body.update(self.settings.extra_body)
         try:
-            with httpx.Client(timeout=self.settings.timeout_seconds) as client:
+            with httpx.Client(timeout=_client_timeout(self.settings)) as client:
+                print("[DEBUG] REQUEST BODY:")
+                print(body)
                 response = client.post(url, headers=headers, json=body)
                 response.raise_for_status()
                 data = response.json()
@@ -142,7 +153,7 @@ class AnthropicProvider(LLMProvider):
         if self.settings.extra_body:
             body.update(self.settings.extra_body)
         try:
-            with httpx.Client(timeout=self.settings.timeout_seconds) as client:
+            with httpx.Client(timeout=_client_timeout(self.settings)) as client:
                 response = client.post(url, headers=headers, json=body)
                 response.raise_for_status()
                 data = response.json()
@@ -183,7 +194,7 @@ class GeminiProvider(LLMProvider):
         if self.settings.extra_body:
             body.update(self.settings.extra_body)
         try:
-            with httpx.Client(timeout=self.settings.timeout_seconds) as client:
+            with httpx.Client(timeout=_client_timeout(self.settings)) as client:
                 response = client.post(url, params=params, json=body, headers=self.settings.extra_headers)
                 response.raise_for_status()
                 data = response.json()

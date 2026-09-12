@@ -1,6 +1,8 @@
 from __future__ import annotations
-
+import time
 import argparse
+from collections import OrderedDict
+from dataclasses import replace
 from pathlib import Path
 
 from evalsys.config import ROOT
@@ -162,15 +164,31 @@ def _cmd_presets(path: Path) -> int:
 def _cmd_ping(preset: str, mix: str, mock: bool) -> int:
     config = load_runtime_config(mix=mix, preset=preset, mock=mock)
     targets = {"all": config.llm_default} if preset else config.llm_agents
+    grouped: OrderedDict[tuple[str, str], list[str]] = OrderedDict()
     for name, settings in targets.items():
-        provider = build_provider(settings)
-        response = provider.complete(
-            system="Reply with compact JSON only.",
-            user='Return {"ok": true, "model": "' + settings.model + '"}',
-        )
-        print(f"{name}: provider={settings.provider} model={settings.model}")
-        print(response.text[:500])
-        print()
+        grouped.setdefault((settings.provider, settings.model), []).append(name)
+
+    failed = 0
+    for (provider, model), names in grouped.items():
+        settings = targets[names[0]]
+        ping_settings = replace(settings, max_tokens=min(settings.max_tokens, 256))
+        print(f"Pinging {', '.join(names)} -> {provider} / {model} ...", flush=True)
+        try:
+            response = build_provider(ping_settings).complete(
+                system="Reply with compact JSON only. No extra text.",
+                user='Return {"ok": true}',
+            )
+            preview = (response.text or "").replace("\n", " ")[:300]
+            print(f"  OK  {preview}\n")
+        except Exception as extra:
+            failed += 1
+            print(f"  FAIL  {extra}\n")
+    if failed:
+        print(f"{failed} endpoint(s) failed. Ping the slow one alone, e.g.")
+        print("  python -m evalsys ping --preset nvidia-gemma-4")
+        print("  python -m evalsys ping --preset gemini")
+        print("  python -m evalsys ping --preset cerebras")
+        return 1
     return 0
 
 

@@ -30,8 +30,8 @@ Default mix is `mixed` in `config/llm.yaml`:
 | correctness | NVIDIA Gemma 4 31B |
 | style | Gemini 2.5 Flash |
 | complexity | Gemini 2.5 Flash |
-| edge_cases | Cerebras Gemma 4 31B |
-| counteragent | Cerebras Gemma 4 31B |
+| edge_cases | Cerebras Qwen 3.8 27B |
+| counteragent | Cerebras Qwen 3.8 27B |
 
 ```bash
 python -m evalsys batch --limit 3

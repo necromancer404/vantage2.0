@@ -3,7 +3,7 @@ from __future__ import annotations
 from evalsys.config import LLMSettings
 from evalsys.llm.base import LLMProvider
 from evalsys.llm.providers import AnthropicProvider, GeminiProvider, MockProvider, OpenAICompatProvider
-
+from evalsys.llm.ollama import OllamaProvider
 _PROVIDERS = {
     "openai": OpenAICompatProvider,
     "openai_compat": OpenAICompatProvider,
@@ -21,6 +21,7 @@ _PROVIDERS = {
     "gemini": GeminiProvider,
     "google": GeminiProvider,
     "mock": MockProvider,
+    "ollama": OllamaProvider,
 }
 
 
