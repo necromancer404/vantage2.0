@@ -1,0 +1,16 @@
+agents:
+  correctness: 0.35
+  edge_cases: 0.20
+  counteragent: 0.20
+  complexity: 0.15
+  style: 0.10
+
+grade_bands:
+  A: 85
+  B: 70
+  C: 50
+  D: 0
+
+disagreement_spread_penalty: 0.15
+max_score: 100
+min_score: 0

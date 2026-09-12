@@ -1,0 +1,121 @@
+# Named judge models. Switch with: python -m evalsys batch --preset groq
+# Edit model IDs here when a provider renames them.
+
+presets:
+  gemini:
+    label: Gemini 2.5 Flash (Google native)
+    provider: gemini
+    model: gemini-2.5-flash
+    api_key_env: GEMINI_API_KEY
+    base_url_env: GEMINI_BASE_URL
+    base_url: https://generativelanguage.googleapis.com/v1beta
+    temperature: 0.2
+    max_tokens: 4096
+    timeout_seconds: 120
+
+  groq:
+    label: Groq GPT-OSS 120B
+    provider: groq
+    model: openai/gpt-oss-120b
+    api_key_env: GROQ_API_KEY
+    base_url_env: GROQ_BASE_URL
+    base_url: https://api.groq.com/openai/v1
+    token_field: max_completion_tokens
+    max_tokens: 4096
+    timeout_seconds: 90
+
+  groq-llama:
+    label: Groq Llama 3.3 70B
+    provider: groq
+    model: llama-3.3-70b-versatile
+    api_key_env: GROQ_API_KEY
+    base_url_env: GROQ_BASE_URL
+    base_url: https://api.groq.com/openai/v1
+    max_tokens: 2048
+
+  nvidia-deepseek:
+    label: DeepSeek V4 Flash via NVIDIA NIM
+    provider: nvidia
+    model: deepseek-ai/deepseek-v4-flash
+    api_key_env: NVIDIA_API_KEY
+    base_url_env: NVIDIA_BASE_URL
+    base_url: https://integrate.api.nvidia.com/v1
+    max_tokens: 4096
+    timeout_seconds: 180
+
+  nvidia-laguna-xs:
+    label: Laguna XS 2.1 via NVIDIA NIM
+    provider: nvidia
+    model: poolside/laguna-xs-2.1
+    api_key_env: NVIDIA_API_KEY
+    base_url_env: NVIDIA_BASE_URL
+    base_url: https://integrate.api.nvidia.com/v1
+    max_tokens: 4096
+    timeout_seconds: 180
+
+  nvidia-gemma-4:
+    label: Gemma 4 31B IT via NVIDIA NIM
+    provider: nvidia
+    model: google/gemma-4-31b-it
+    api_key_env: NVIDIA_API_KEY
+    base_url_env: NVIDIA_BASE_URL
+    base_url: https://integrate.api.nvidia.com/v1
+    max_tokens: 4096
+    timeout_seconds: 180
+
+  moonshot-kimi-k3:
+    label: Moonshot Kimi K3
+    provider: moonshot
+    model: kimi-k3
+    api_key_env: MOONSHOT_API_KEY
+    base_url_env: MOONSHOT_BASE_URL
+    base_url: https://api.moonshot.ai/v1
+    send_temperature: false
+    extra_body:
+      reasoning_effort: low
+    max_tokens: 4096
+    timeout_seconds: 180
+
+  openrouter-kimi-k3:
+    label: moonshotai/kimi-k3 via OpenRouter
+    provider: openrouter
+    model: moonshotai/kimi-k3
+    api_key_env: OPENROUTER_API_KEY
+    base_url_env: OPENROUTER_BASE_URL
+    base_url: https://openrouter.ai/api/v1
+    extra_headers:
+      HTTP-Referer: https://localhost
+      X-Title: vantage-eval
+    max_tokens: 4096
+    timeout_seconds: 180
+
+  cerebras:
+    label: Cerebras Gemma 4 31B
+    provider: cerebras
+    model: gemma-4-31b
+    api_key_env: CEREBRAS_API_KEY
+    base_url_env: CEREBRAS_BASE_URL
+    base_url: https://api.cerebras.ai/v1
+    max_tokens: 4096
+    timeout_seconds: 120
+
+  cerebras-gpt-oss:
+    label: Cerebras GPT-OSS 120B
+    provider: cerebras
+    model: gpt-oss-120b
+    api_key_env: CEREBRAS_API_KEY
+    base_url_env: CEREBRAS_BASE_URL
+    base_url: https://api.cerebras.ai/v1
+    token_field: max_completion_tokens
+    max_tokens: 4096
+    timeout_seconds: 120
+
+# Used by: python -m evalsys batch --sweep
+test_suite:
+  - gemini
+  - groq
+  - nvidia-deepseek
+  - nvidia-laguna-xs
+  - nvidia-gemma-4
+  - moonshot-kimi-k3
+  - cerebras

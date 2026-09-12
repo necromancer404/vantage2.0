@@ -1,0 +1,46 @@
+# Swap providers/models per agent without touching code.
+# provider: openai_compat | anthropic | gemini | mock
+# api_key_env: name of the environment variable holding the key
+
+default:
+  provider: openai_compat
+  model: gpt-4o-mini
+  api_key_env: OPENAI_API_KEY
+  base_url_env: OPENAI_BASE_URL
+  base_url: https://api.openai.com/v1
+  temperature: 0.2
+  max_tokens: 1200
+  timeout_seconds: 90
+  extra_headers: {}
+
+# Optional per-agent overrides. Uncomment and change as needed.
+agents:
+  correctness: {}
+  style: {}
+  counteragent: {}
+  edge_cases: {}
+  complexity: {}
+
+# Example: mix providers
+# agents:
+#   correctness:
+#     model: gpt-4o
+#   style:
+#     provider: openai_compat
+#     model: llama-3.3-70b-versatile
+#     api_key_env: GROQ_API_KEY
+#     base_url_env: GROQ_BASE_URL
+#     base_url: https://api.groq.com/openai/v1
+#   counteragent:
+#     provider: anthropic
+#     model: claude-sonnet-4-20250514
+#     api_key_env: ANTHROPIC_API_KEY
+#   edge_cases:
+#     provider: gemini
+#     model: gemini-2.0-flash
+#     api_key_env: GEMINI_API_KEY
+#   complexity:
+#     provider: openai_compat
+#     model: deepseek-chat
+#     api_key_env: DEEPSEEK_API_KEY
+#     base_url: https://api.deepseek.com
