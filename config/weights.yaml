@@ -1,8 +1,8 @@
 agents:
-  correctness: 0.35
-  edge_cases: 0.20
-  counteragent: 0.20
-  complexity: 0.15
+  correctness: 0.50
+  edge_cases: 0.15
+  counteragent: 0.15
+  complexity: 0.10
   style: 0.10
 
 grade_bands:

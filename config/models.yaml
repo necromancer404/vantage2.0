@@ -145,9 +145,11 @@ presets:
       model: qwen2.5-coder:14b
       api_key_env: OLLAMA_API_KEY
       base_url_env: OLLAMA_BASE_URL
-      base_url: http://localhost:11434/v1
+      base_url: http://localhost:11434/
       max_tokens: 4096
       timeout_seconds: 180
+      extra_body:
+        think: false
     
   gemma3:12b:
       label: gemma3:12b via Ollama
@@ -215,7 +217,7 @@ mixes:
   mixed:
     label: Gemma correctness, Gemini style/complexity, Cerebras Qwen edge/counter
     agents:
-      correctness: qwen3-8
+      correctness: qwen2.5-coder:14b
       style: gemini
       complexity: gemini-3.5-flash-lite
       edge_cases: gemini
