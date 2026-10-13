@@ -4,6 +4,7 @@ from evalsys.config import LLMSettings
 from evalsys.llm.base import LLMError, LLMProvider
 from evalsys.llm.json_util import extract_json_object, parse_verdict_payload
 from evalsys.prompts import AGENT_SYSTEM_PROMPTS, build_user_prompt
+from evalsys.rubrics import rubric_for_agent
 from evalsys.schemas import AGENT_NAMES, AgentVerdict, EvaluationSample
 
 
@@ -22,6 +23,8 @@ class AgentRunner:
             submission=sample.submission,
             criterion=sample.criterion,
             ratings=sample.ratings,
+            max_marks=sample.max_marks,
+            rubric=rubric_for_agent(self.name, sample.rubric),
         )
         try:
             response = self.provider.complete(system=self.system_prompt, user=user_prompt)

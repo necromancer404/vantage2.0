@@ -13,10 +13,15 @@ CSV_FIELDS = [
     "judge_model",
     "judge_provider",
     "criterion",
+    "category",
     "ground_truth",
+    "awarded_marks",
+    "max_marks",
     "predicted_grade",
+    "score_100",
     "total_score",
     "overall_confidence",
+    "rubric",
     *[
         field
         for name in AGENT_NAMES
@@ -59,6 +64,11 @@ class ResultStore:
             "predicted_grade": record.predicted_grade,
             "preset": record.preset,
             "ground_truth": record.sample.ground_truth,
+            "category": record.sample.category,
+            "awarded_marks": record.sample.awarded_marks,
+            "max_marks": record.sample.max_marks,
+            "score_100": record.score_100,
+            "rubric": record.sample.rubric,
             "verdicts": {
                 name: {
                     "score": verdict.score,

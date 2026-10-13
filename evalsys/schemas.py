@@ -22,6 +22,10 @@ class EvaluationSample:
     criterion: str = ""
     ratings: dict[str, str] = field(default_factory=dict)
     ground_truth: str = ""
+    category: str = ""
+    max_marks: float = 100.0
+    awarded_marks: float | None = None
+    rubric: str = ""
     extra: dict[str, Any] = field(default_factory=dict)
 
 
@@ -58,6 +62,7 @@ class EvaluationRecord:
     total_score: float
     overall_confidence: float
     predicted_grade: str
+    score_100: float = 0.0
     preset: str = ""
     created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
@@ -71,9 +76,14 @@ class EvaluationRecord:
             "judge_model": " | ".join(models),
             "judge_provider": " | ".join(providers),
             "criterion": self.sample.criterion,
+            "category": self.sample.category,
             "ground_truth": self.sample.ground_truth,
+            "awarded_marks": "" if self.sample.awarded_marks is None else round(self.sample.awarded_marks, 4),
+            "max_marks": int(round(self.sample.max_marks)),
             "predicted_grade": self.predicted_grade,
-            "total_score": round(self.total_score, 4),
+            "score_100": round(self.score_100, 4),
+            "total_score": int(round(self.total_score)),
+            "rubric": self.sample.rubric,
             "overall_confidence": round(self.overall_confidence, 4),
             "question": self.sample.question,
             "submission": self.sample.submission,

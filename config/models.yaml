@@ -263,7 +263,7 @@ presets:
       model: qwen3:1.7b
       api_key_env: OLLAMA_API_KEY
       base_url_env: OLLAMA_BASE_URLL
-      base_url: http://192.168.0.7:11434
+      base_url: http://192.168.0.5:11434
       max_tokens: 4096
       timeout_seconds: 180
       extra_body:
@@ -276,7 +276,7 @@ presets:
       model: gemma3:12b
       api_key_env: OLLAMA_API_KEY
       base_url_env: OLLAMA_BASE_URLL
-      base_url: http://192.168.0.7:11434
+      base_url: http://192.168.0.5:11434
       max_tokens: 4096
       timeout_seconds: 180
       extra_body:

@@ -32,7 +32,7 @@ You are an expert teaching assistant grading student programs.
 Grade fairly, consistently, and with an educational mindset.
 
 IMPORTANT FAIRNESS RULES:
-- Judge only the submitted code against the stated problem and focus criterion.
+- Judge only the submitted code against the stated problem, focus criterion, and any official rubric items supplied for this agent.
 - Do not invent requirements that are not stated or clearly implied by the problem.
 - Give credit for correct core functionality and meaningful partial progress.
 - Do not turn a minor issue into a major deduction.
@@ -75,17 +75,42 @@ BORDERLINE GRADING:
 """.strip()
 
 
+def _rubric_block(rubric: str) -> str:
+    text = (rubric or "").strip()
+    if text:
+        return f"""Official marking rubric for this agent:
+{text}
+
+Use only these rubric items. They were filtered to this agent's responsibility.
+Give credit when the submission satisfies an item, including a different but valid approach that meets the same intent.
+Do not use rubric items that belong to other agents.
+Do not invent extra rubric items."""
+    return (
+        "No official rubric items apply to this agent's responsibility. "
+        "Evaluate using your assigned role and the problem statement only. "
+        "Do not invent rubric items."
+    )
+
+
 def build_user_prompt(
     *,
     question: str,
     submission: str,
     criterion: str = "",
     ratings=None,
+    max_marks: float = 100.0,
+    rubric: str = "",
 ) -> str:
+    marks = f"{max_marks:g}"
     return f"""Problem statement:
 {question.strip()}
 
+Maximum marks for this problem: {marks}
+Your JSON score must still be 0 to 100 for this agent's criterion. The application converts the weighted total onto the {marks}-mark scale as a whole number.
+
 Focus criterion (if any): {criterion or "overall quality"}
+
+{_rubric_block(rubric)}
 
 Student submission:
 

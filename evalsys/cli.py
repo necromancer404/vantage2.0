@@ -34,7 +34,15 @@ def _parse_agent_assignment(value: str) -> tuple[str, str]:
 
 
 def _add_eval_flags(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument("--xlsx", type=Path, default=ROOT / "test_30_each_ground_truth.xlsx")
+    parser.add_argument(
+        "--xlsx",
+        "--csv",
+        "--dataset",
+        dest="dataset",
+        type=Path,
+        default=ROOT / "test_30_each_ground_truth.xlsx",
+        help="Sample workbook (.xlsx) or CSV with question, submission, and total marks",
+    )
     parser.add_argument("--sheet", default="all_samples")
     parser.add_argument("--limit", type=int, default=None)
     parser.add_argument("--offset", type=int, default=0)
@@ -65,7 +73,7 @@ def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Multi-agent automated code evaluation")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    batch = sub.add_parser("batch", help="Evaluate rows from the ground-truth workbook")
+    batch = sub.add_parser("batch", help="Evaluate rows from a CSV or ground-truth workbook")
     _add_eval_flags(batch)
     batch.add_argument(
         "--sweep",
@@ -79,6 +87,7 @@ def _build_parser() -> argparse.ArgumentParser:
     one.add_argument("code", type=Path)
     one.add_argument("--question", required=True)
     one.add_argument("--criterion", default="")
+    one.add_argument("--max-marks", type=float, default=100.0)
     one.add_argument("--out", type=Path, default=ROOT / "results" / "evaluations.csv")
     one.add_argument("--mock", action="store_true")
     one.add_argument("--workers", type=int, default=5)
@@ -108,8 +117,12 @@ def _assignments(agent_flags: list[tuple[str, str]] | None) -> dict[str, str]:
 
 def _print_record(record) -> None:
     tag = f"[{record.preset}] " if record.preset else ""
-    print(f"{tag}{record.sample.sample_id}  total={record.total_score:.2f}  "
-          f"conf={record.overall_confidence:.3f}  grade={record.predicted_grade}")
+    print(
+        f"{tag}{record.sample.sample_id}  "
+        f"total={int(record.total_score)}/{int(round(record.sample.max_marks))}  "
+        f"score100={record.score_100:.2f}  "
+        f"conf={record.overall_confidence:.3f}  grade={record.predicted_grade}"
+    )
     for name, verdict in record.verdicts.items():
         err = f"  ERROR={verdict.error}" if verdict.error else ""
         print(f"  {name:13} {verdict.model:32} score={verdict.score:6.2f}  conf={verdict.confidence:.3f}{err}")
@@ -203,10 +216,11 @@ def main(argv: list[str] | None = None) -> int:
             print(f"Ping failed: {extra}")
             return 1
     if args.command == "batch":
-        samples = load_samples(args.xlsx, sheet=args.sheet, limit=args.limit, offset=args.offset)
+        samples = load_samples(args.dataset, sheet=args.sheet, limit=args.limit, offset=args.offset)
         if not samples:
             print("No samples found.")
             return 1
+        print(f"Loaded {len(samples)} sample(s) from {args.dataset}")
         if args.sweep:
             failed = 0
             for name in _resolve_sweep(args.sweep):
@@ -227,7 +241,9 @@ def main(argv: list[str] | None = None) -> int:
             agent_assignments=_assignments(args.agent),
         )
     if args.command == "file":
-        sample = sample_from_code_file(args.code, args.question, args.criterion)
+        sample = sample_from_code_file(
+            args.code, args.question, args.criterion, max_marks=args.max_marks
+        )
         return _run(
             [sample],
             args.out,

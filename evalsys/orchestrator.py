@@ -26,12 +26,17 @@ class EvaluationOrchestrator:
                 name = futures[future]
                 verdicts[name] = future.result()
 
-        total, confidence, grade = combine_verdicts(verdicts, self.config.weights)
+        total, confidence, grade, score_100 = combine_verdicts(
+            verdicts,
+            self.config.weights,
+            max_marks=sample.max_marks,
+        )
         return EvaluationRecord(
             sample=sample,
             verdicts=verdicts,
             total_score=total,
             overall_confidence=confidence,
             predicted_grade=grade,
+            score_100=score_100,
             preset=self.config.preset,
         )
